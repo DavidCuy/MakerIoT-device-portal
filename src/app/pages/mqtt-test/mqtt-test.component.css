@@ -1,0 +1,57 @@
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
+    color: #344767;
+    background-color: #fff;
+}
+
+.card>.card-body.tabs-container {
+    background-color: #f8f9fa;
+}
+
+textarea.form-control,
+.inner-message {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.inner-card>.card-header {
+    background-color: #f8f9fa;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.mqtt-topic.selected {
+    background-color: #DDD;
+}
+
+.item-text.pointer {
+    cursor: pointer;
+}
+
+.item-text {
+    width: 100%;
+}
+
+.h-350 {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.h-350::-webkit-scrollbar {
+    width: 10px;
+}
+
+.h-350::-webkit-scrollbar-track {
+    background: #EEE;
+    /* color of the tracking area */
+}
+
+.h-350::-webkit-scrollbar-thumb {
+    background-color: #BBB;
+    /* color of the scroll thumb */
+    border-radius: 15px;
+    /* roundness of the scroll thumb */
+    border: 2px solid #DDD;
+    /* creates padding around scroll thumb */
+}

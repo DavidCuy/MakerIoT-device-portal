@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-12">
+        <h4>Configuración</h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="tabs-container card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': hostIP != ''}">
+                            <label class="form-label">IP del host</label>
+                            <input type="text" class="form-control" [(ngModel)]="hostIP">
+                        </div>
+                        <button type="button" class="btn btn-primary" (click)="save_settings()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
