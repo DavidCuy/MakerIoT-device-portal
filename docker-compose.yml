@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  api-internal-iot:
+    image: davidcuy/makeriot-internal-api:dev
+    container_name: api-internal-iot
+    env_file:
+      - ./.services/api-internal/.env
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+      - 5000:5000
+    volumes: 
+      - './.services/server/conf:/code/conf'
+      - './.volumes/db:/code/db'
+      - './.volumes/server/storage:/code/api/storage/local'
+      - './.volumes/server/credentials/server:/code/api/storage/credentials/server'
+      - './.volumes/server/credentials/clients:/code/api/storage/credentials/clients'
+
