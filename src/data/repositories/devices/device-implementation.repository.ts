@@ -22,12 +22,14 @@ export class DeviceImplementationRepository extends DeviceRepository {
         page?: number,
         perPage?: number,
         filterByColum?: {name: string, value: string | number | boolean}[],
-        searchByColumn?: {name: string, value: string | number | boolean}[]
+        searchByColumn?: {name: string, value: string | number | boolean}[],
+        relationships: string[]
     } = {
       page: 1,
       perPage: 10,
       filterByColum: [],
-      searchByColumn: []
+      searchByColumn: [],
+      relationships: []
     }): Observable<DeviceModel[]> {
         let sendParams: HttpParams = get_column_filters_params(params)
         return this.http

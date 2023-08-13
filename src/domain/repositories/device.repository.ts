@@ -5,7 +5,8 @@ export abstract class DeviceRepository {
         page?: number,
         perPage?: number,
         filterByColum?: {name: string, value: string | number | boolean}[],
-        searchByColumn?: {name: string, value: string | number | boolean}[]
+        searchByColumn?: {name: string, value: string | number | boolean}[],
+        relationships: string[]
     }): Observable<DeviceModel[]>;
     abstract store(params: {idDeviceType: number, name: string, serial: string}): Observable<DeviceModel>;
     abstract find(params: {id: number}): Observable<DeviceModel>;
