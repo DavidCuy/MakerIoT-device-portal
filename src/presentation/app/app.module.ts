@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MqttCredentialComponent } from './pages/mqtt-credential/mqtt-credential.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
-import { environment as env } from '../environments/environment';
+import { environment as env } from '../../environments/environment';
 import { ConfigComponent } from './pages/config/config.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';

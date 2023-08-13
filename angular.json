@@ -27,7 +27,7 @@
                         "tsConfig": "tsconfig.app.json",
                         "assets": [
                             "src/favicon.ico",
-                            "src/assets"
+                            "src/presentation/assets"
                         ],
                         "styles": [
                             "src/styles.css",
@@ -92,7 +92,7 @@
                         "karmaConfig": "karma.conf.js",
                         "assets": [
                             "src/favicon.ico",
-                            "src/assets"
+                            "src/presentation/assets"
                         ],
                         "styles": [
                             "src/styles.css",

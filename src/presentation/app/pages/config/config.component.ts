@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { environment as env } from '../../../environments/environment';
+import { environment as env } from '../../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { NavigationEnd, Router } from '@angular/router';
 
