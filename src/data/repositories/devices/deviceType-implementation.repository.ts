@@ -8,6 +8,8 @@ import { DeviceTypeRepository } from 'src/domain/repositories/deviceType.reposit
 import { DeviceTypeModel } from 'src/domain/models/deviceType.model';
 import { API_BASE_URL } from 'src/environments/environment';
 import { IndexEntity } from './entities/index-entity';
+import { get_column_filters_params } from './mappers/utilities';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -27,16 +29,7 @@ export class DeviceTypeImplementationRepository extends DeviceTypeRepository {
         filterByColum: [],
         searchByColumn: []
     }): Observable<DeviceTypeModel[]> {
-        let sendParams: HttpParams = new HttpParams({fromObject: {
-            page: params.page ? params.page : 1,
-            perPage: params.perPage ? params.perPage : 10
-          }})
-        for (let valuePair of params.filterByColum ? params.filterByColum : []) {
-          sendParams.append(valuePair.name, valuePair.value)
-        }
-        for (let valuePair of params.searchByColumn ? params.searchByColumn : []) {
-            sendParams.append(valuePair.name, valuePair.value)
-          }
+        let sendParams: HttpParams = get_column_filters_params(params)
         return this.http
             .get<IndexEntity>(`${API_BASE_URL}/device-type`, { params: sendParams })
             .pipe(map(this.deviceTypeMapper.mapMultipleFrom));

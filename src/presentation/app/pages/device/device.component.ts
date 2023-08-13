@@ -24,7 +24,6 @@ export class DeviceComponent implements OnInit {
   ngOnInit(): void {
     this.deviceIndexUsecase.execute().subscribe((resp) => {
       this.deviceTypes = resp;
-      console.log(this.deviceTypes)
     })
 
     this.deviceService.get([ {name: 'relationships', value: 'deviceType'}]).subscribe((resp) => {
