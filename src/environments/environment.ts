@@ -8,11 +8,14 @@ export const environment = {
   production: false,
   hostIP: hostIP,
   apiPort: 5000,
+  stage: 'dev',
   mqtt: {
     protocol: 'ws',
     port: 9001
-  }
+  },
 };
+
+export const API_BASE_URL: string = `http://${environment.hostIP}:${environment.apiPort}/${environment.stage}`
 
 /*
  * For easier debugging in development mode, you can import the following file

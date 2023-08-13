@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { DeviceComponent } from './pages/device/device.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DataModule } from 'src/data/data.module';
 
 
 const importModules: (typeof BrowserModule | typeof AppRoutingModule | ModuleWithProviders<MqttModule> | ModuleWithProviders<ToastrModule>  ) [] = [
@@ -27,6 +28,7 @@ const importModules: (typeof BrowserModule | typeof AppRoutingModule | ModuleWit
   HttpClientModule,
   FormsModule,
   BrowserAnimationsModule,
+  DataModule,
   ToastrModule.forRoot()
 ]
 

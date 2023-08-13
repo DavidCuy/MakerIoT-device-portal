@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { DeviceTypeIndexUseCase } from 'src/domain/usecases/deviceType/index.usecase';
 import { DeviceTypeService } from '../../services/device-type.service';
 import { DeviceService } from '../../services/device.service';
 
@@ -18,11 +19,12 @@ export class DeviceComponent implements OnInit {
   newSerial: string = ''
   newDeviceType: number = -1
 
-  constructor(private deviceTypeService: DeviceTypeService, private deviceService: DeviceService, private toastr: ToastrService) { }
+  constructor(private deviceIndexUsecase: DeviceTypeIndexUseCase, private deviceService: DeviceService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.deviceTypeService.get().subscribe((resp) => {
-      this.deviceTypes = resp.Data;
+    this.deviceIndexUsecase.execute().subscribe((resp) => {
+      this.deviceTypes = resp;
+      console.log(this.deviceTypes)
     })
 
     this.deviceService.get([ {name: 'relationships', value: 'deviceType'}]).subscribe((resp) => {
