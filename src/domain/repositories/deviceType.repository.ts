@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { DeviceTypeModel } from '../models/deviceType.model';
+import { IndexEntity } from 'src/data/repositories/devices/entities/index-entity';
 export abstract class DeviceTypeRepository {
     abstract index(params: {
         page?: number,
@@ -7,7 +8,7 @@ export abstract class DeviceTypeRepository {
         filterByColum?: {name: string, value: string | number | boolean}[],
         searchByColumn?: {name: string, value: string | number | boolean}[],
         relationships: string[]
-    }): Observable<DeviceTypeModel[]>;
+    }): Observable<IndexEntity<DeviceTypeModel>>;
     abstract store(params: {name: string}): Observable<DeviceTypeModel>;
     abstract find(params: {id: number}): Observable<DeviceTypeModel>;
 }

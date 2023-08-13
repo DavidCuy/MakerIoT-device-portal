@@ -2,13 +2,14 @@ import { Observable } from 'rxjs';
 import { UseCase } from '../../../base/use-case';
 import { DeviceTypeModel } from '../../models/deviceType.model';
 import { DeviceTypeRepository } from '../../repositories/deviceType.repository';
+import { IndexEntity } from 'src/data/repositories/devices/entities/index-entity';
 export class DeviceTypeIndexUseCase implements UseCase<{
         page?: number,
         perPage?: number,
         filterByColum?: {name: string, value: string | number | boolean}[],
         searchByColumn?: {name: string, value: string | number | boolean}[],
         relationships: string[]
-    }, DeviceTypeModel[]> {
+    }, IndexEntity<DeviceTypeModel>> {
     constructor(private deviceTypeRepository: DeviceTypeRepository) { }
     execute(
        params: {
@@ -18,7 +19,7 @@ export class DeviceTypeIndexUseCase implements UseCase<{
         searchByColumn?: {name: string, value: string | number | boolean}[],
         relationships: string[]
     } = {page:1, perPage:10, filterByColum: [], searchByColumn: [], relationships: []},
-    ): Observable<DeviceTypeModel[]> {
+    ): Observable<IndexEntity<DeviceTypeModel>> {
         return this.deviceTypeRepository.index(params);
     }
 }

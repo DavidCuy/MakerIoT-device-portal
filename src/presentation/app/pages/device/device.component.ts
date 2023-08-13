@@ -27,11 +27,11 @@ export class DeviceComponent implements OnInit {
 
   ngOnInit(): void {
     this.deviceTypeIndexUsecase.execute().subscribe((resp) => {
-      this.deviceTypes = resp;
+      this.deviceTypes = resp.Data;
     })
 
     this.deviceIndexUseCase.execute({ relationships: ['deviceType'] }).subscribe((resp) => {
-      this.devices = resp;
+      this.devices = resp.Data;
     })
   }
 
@@ -44,7 +44,7 @@ export class DeviceComponent implements OnInit {
 
     this.deviceStoreUseCase.execute(body).subscribe(resp => {
       this.deviceIndexUseCase.execute({ relationships: ['deviceType'] }).subscribe((respIn) => {
-        this.devices = respIn;
+        this.devices = respIn.Data;
       })
       this.toastr.success('Se ha creado dispositivo correctamente', 'Correcto').onHidden.subscribe((toastr) => {
         this.deviceModalCloseBtn.nativeElement.click()

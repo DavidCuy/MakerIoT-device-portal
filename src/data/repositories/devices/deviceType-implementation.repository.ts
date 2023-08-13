@@ -30,10 +30,10 @@ export class DeviceTypeImplementationRepository extends DeviceTypeRepository {
         filterByColum: [],
         searchByColumn: [],
         relationships: []
-    }): Observable<DeviceTypeModel[]> {
+    }): Observable<IndexEntity<DeviceTypeModel>> {
         let sendParams: HttpParams = get_column_filters_params(params)
         return this.http
-            .get<IndexEntity>(`${API_BASE_URL}/device-type`, { params: sendParams })
+            .get<IndexEntity<DeviceTypeModel>>(`${API_BASE_URL}/device-type`, { params: sendParams })
             .pipe(map(this.deviceTypeMapper.mapMultipleFrom));
     }
     store(params: {name: string}): Observable<DeviceTypeModel> {
