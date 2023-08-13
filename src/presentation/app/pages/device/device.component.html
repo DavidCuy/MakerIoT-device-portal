@@ -46,7 +46,7 @@
                         <div><b>Tipo de dispositivo</b></div>
                         <div class="d-flex">
                             <a href="javascript:void(0)">
-                                <span class="badge bg-gradient-secondary">{{ device?.deviceType.name }}</span>
+                                <span class="badge bg-gradient-secondary">{{ device?.deviceType?.name }}</span>
                             </a>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
     <div class="row">
         <nav aria-label="Page navigation example">
             <ul class="pagination float-right">
-              <li class="page-item">
+              <li class="page-item" *ngIf="showPrev">
                 <a class="page-link" href="javascript:;" aria-label="Previous">
                   <span class="material-icons">
                     keyboard_arrow_left
@@ -67,7 +67,7 @@
                 </a>
               </li>
               <li class="page-item">
-                <a class="page-link" href="javascript:;" aria-label="Next">
+                <a class="page-link" href="javascript:;" aria-label="Next" *ngIf="showNext">
                   <span class="material-icons">
                     keyboard_arrow_right
                   </span>

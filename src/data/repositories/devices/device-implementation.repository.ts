@@ -7,7 +7,7 @@ import { DeviceImplementationRepositoryMapper } from './mappers/device-repositor
 import { DeviceRepository } from 'src/domain/repositories/device.repository';
 import { DeviceModel } from 'src/domain/models/device.model';
 import { API_BASE_URL } from 'src/environments/environment';
-import { IndexEntity } from './entities/index-entity';
+import { IndexEntity } from '../index-entity';
 import { get_column_filters_params, get_post_headers } from './mappers/utilities';
 
 @Injectable({

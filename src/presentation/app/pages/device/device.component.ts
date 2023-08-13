@@ -3,6 +3,9 @@ import { ToastrService } from 'ngx-toastr';
 import { DeviceTypeIndexUseCase } from 'src/domain/usecases/deviceType/index.usecase';
 import { DeviceIndexUseCase } from 'src/domain/usecases/device/index.usecase';
 import { DeviceStoreUseCase } from 'src/domain/usecases/device/store.usecase';
+import { DeviceModel } from 'src/domain/models/device.model';
+import { DeviceTypeModel } from 'src/domain/models/deviceType.model';
+import { IndexEntity } from 'src/data/repositories/index-entity';
 
 @Component({
   selector: 'app-device',
@@ -11,13 +14,16 @@ import { DeviceStoreUseCase } from 'src/domain/usecases/device/store.usecase';
 })
 export class DeviceComponent implements OnInit {
   @ViewChild('deviceModalCloseBtn') deviceModalCloseBtn: ElementRef<HTMLElement>
-  devices: any[] = []
+  indexObject: IndexEntity<DeviceModel>;
+  devices: DeviceModel[] = []
 
-  deviceTypes: any[] = []
+  deviceTypes: DeviceTypeModel[] = []
 
   newName: string = ''
   newSerial: string = ''
   newDeviceType: number = -1
+  showNext: boolean = false;
+  showPrev: boolean = false;
 
   constructor(
     private deviceTypeIndexUsecase: DeviceTypeIndexUseCase,
@@ -31,7 +37,8 @@ export class DeviceComponent implements OnInit {
     })
 
     this.deviceIndexUseCase.execute({ relationships: ['deviceType'] }).subscribe((resp) => {
-      this.devices = resp.Data;
+      this.indexObject = resp;
+      this.devices = this.indexObject.Data;
     })
   }
 

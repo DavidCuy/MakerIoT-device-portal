@@ -1,7 +1,7 @@
 import { Mapper } from 'src/base/mapper';
 import { DeviceTypeModel } from 'src/domain/models/deviceType.model';
 import { DeviceTypeEntity } from '../entities/deviceType-entity';
-import { IndexEntity } from '../entities/index-entity';
+import { IndexEntity } from '../../index-entity';
 
 
 export class DeviceTypeImplementationRepositoryMapper extends Mapper<DeviceTypeEntity | IndexEntity<DeviceTypeModel>, DeviceTypeModel | IndexEntity<DeviceTypeModel>> {

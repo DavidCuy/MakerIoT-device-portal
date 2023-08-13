@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { UseCase } from '../../../base/use-case';
 import { DeviceModel } from '../../models/device.model';
 import { DeviceRepository } from '../../repositories/device.repository';
-import { IndexEntity } from 'src/data/repositories/devices/entities/index-entity';
+import { IndexEntity } from 'src/data/repositories/index-entity';
 export class DeviceIndexUseCase implements UseCase<{
     page?: number,
     perPage?: number,
