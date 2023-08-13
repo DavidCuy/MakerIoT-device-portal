@@ -37,7 +37,6 @@ export class DeviceImplementationRepository extends DeviceRepository {
             .pipe(map(this.deviceMapper.mapMultipleFrom));
     }
     store(params: {id_device_type: number, name: string, serial: string}): Observable<DeviceModel> {
-        console.log(params)
         return this.http
             .post<DeviceEntity>(`${API_BASE_URL}/device/`, params, { headers: get_post_headers() })
             .pipe(map(this.deviceMapper.mapFrom));

@@ -10,7 +10,8 @@ export class DeviceImplementationRepositoryMapper extends Mapper<DeviceEntity | 
             id: param.id,
             id_device_type: param.id_device_type,
             name: param.name,
-            serial: param.serial
+            serial: param.serial,
+            deviceType: param.deviceType
         };
     }
     mapTo(param: DeviceModel): DeviceEntity {
@@ -18,7 +19,8 @@ export class DeviceImplementationRepositoryMapper extends Mapper<DeviceEntity | 
           id: param.id,
           id_device_type: param.id_device_type,
           name: param.name,
-          serial: param.serial
+          serial: param.serial,
+          deviceType: param.deviceType
         }
     }
 
@@ -28,7 +30,8 @@ export class DeviceImplementationRepositoryMapper extends Mapper<DeviceEntity | 
                 id: param.id,
                 id_device_type: param.id_device_type,
                 name: param.name,
-                serial: param.serial
+                serial: param.serial,
+                deviceType: param.deviceType
               }
         })
     }
