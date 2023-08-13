@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import { DeviceModel } from '../models/device.model';
-import { IndexEntity } from 'src/data/repositories/index-entity';
+import { IndexEntity } from 'src/data/repositories/index/entitites/index-entity';
 export abstract class DeviceRepository {
     abstract index(params: {
         page?: number,

@@ -5,7 +5,7 @@ import { DeviceIndexUseCase } from 'src/domain/usecases/device/index.usecase';
 import { DeviceStoreUseCase } from 'src/domain/usecases/device/store.usecase';
 import { DeviceModel } from 'src/domain/models/device.model';
 import { DeviceTypeModel } from 'src/domain/models/deviceType.model';
-import { IndexEntity } from 'src/data/repositories/index-entity';
+import { IndexEntity } from 'src/data/repositories/index/entitites/index-entity';
 
 @Component({
   selector: 'app-device',
