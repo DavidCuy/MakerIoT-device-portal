@@ -8,7 +8,7 @@ export class DeviceImplementationRepositoryMapper extends Mapper<DeviceEntity | 
     mapFrom(param: DeviceEntity): DeviceModel {
         return {
             id: param.id,
-            idDeviceType: param.idDeviceType,
+            id_device_type: param.id_device_type,
             name: param.name,
             serial: param.serial
         };
@@ -16,7 +16,7 @@ export class DeviceImplementationRepositoryMapper extends Mapper<DeviceEntity | 
     mapTo(param: DeviceModel): DeviceEntity {
         return {
           id: param.id,
-          idDeviceType: param.idDeviceType,
+          id_device_type: param.id_device_type,
           name: param.name,
           serial: param.serial
         }
@@ -26,7 +26,7 @@ export class DeviceImplementationRepositoryMapper extends Mapper<DeviceEntity | 
         return params.Data.map((param) => {
             return {
                 id: param.id,
-                idDeviceType: param.idDeviceType,
+                id_device_type: param.id_device_type,
                 name: param.name,
                 serial: param.serial
               }

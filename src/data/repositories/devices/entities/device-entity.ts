@@ -1,6 +1,6 @@
 export interface DeviceEntity {
   id: number;
-  idDeviceType: number;
+  id_device_type: number;
   name: string;
   serial: string
 }

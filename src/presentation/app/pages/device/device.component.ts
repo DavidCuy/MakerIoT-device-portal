@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { DeviceTypeIndexUseCase } from 'src/domain/usecases/deviceType/index.usecase';
 import { DeviceIndexUseCase } from 'src/domain/usecases/device/index.usecase';
+import { DeviceStoreUseCase } from 'src/domain/usecases/device/store.usecase';
 import { DeviceService } from '../../services/device.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class DeviceComponent implements OnInit {
   constructor(
     private deviceTypeIndexUsecase: DeviceTypeIndexUseCase,
     private deviceIndexUseCase: DeviceIndexUseCase,
+    private deviceStoreUseCase: DeviceStoreUseCase,
     private toastr: ToastrService, private deviceService: DeviceService) { }
 
   ngOnInit(): void {
@@ -31,7 +33,6 @@ export class DeviceComponent implements OnInit {
 
     this.deviceIndexUseCase.execute({ relationships: ['deviceType'] }).subscribe((resp) => {
       this.devices = resp;
-      console.log(resp)
     })
   }
 
@@ -42,18 +43,18 @@ export class DeviceComponent implements OnInit {
       serial: this.newSerial
     }
 
-    this.deviceService.create(body).subscribe(resp => {
+    this.deviceStoreUseCase.execute(body).subscribe(resp => {
       console.log(resp)
-      this.deviceService.get([ {name: 'relationships', value: 'deviceType'}]).subscribe((resp) => {
-        this.devices = resp.Data;
-      })
+      this.deviceTypeIndexUsecase.execute().subscribe((resp) => {
+        this.deviceTypes = resp;
+      });
       this.toastr.success('Se ha creado dispositivo correctamente', 'Correcto').onHidden.subscribe((toastr) => {
         this.deviceModalCloseBtn.nativeElement.click()
-      })
+      });
     }, err => {
       console.error(err)
       this.toastr.error('Ocurrio un error', 'error')
-    })
+    });
   }
 
 }

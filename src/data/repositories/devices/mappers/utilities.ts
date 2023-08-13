@@ -1,4 +1,4 @@
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 function get_column_filters_params (params: {
         page?: number,
@@ -24,4 +24,11 @@ function get_column_filters_params (params: {
     return sendParams;
 }
 
-export { get_column_filters_params }
+function get_post_headers () : HttpHeaders {
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    })
+}
+
+export { get_column_filters_params, get_post_headers }

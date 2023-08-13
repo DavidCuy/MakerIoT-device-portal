@@ -8,7 +8,7 @@ import { DeviceRepository } from 'src/domain/repositories/device.repository';
 import { DeviceModel } from 'src/domain/models/device.model';
 import { API_BASE_URL } from 'src/environments/environment';
 import { IndexEntity } from './entities/index-entity';
-import { get_column_filters_params } from './mappers/utilities';
+import { get_column_filters_params, get_post_headers } from './mappers/utilities';
 
 @Injectable({
     providedIn: 'root',
@@ -36,9 +36,10 @@ export class DeviceImplementationRepository extends DeviceRepository {
             .get<IndexEntity>(`${API_BASE_URL}/device`, { params: sendParams })
             .pipe(map(this.deviceMapper.mapMultipleFrom));
     }
-    store(params: {idDeviceType: number, name: string, serial: string}): Observable<DeviceModel> {
-       return this.http
-            .post<DeviceEntity>('https://example.com/register', {params})
+    store(params: {id_device_type: number, name: string, serial: string}): Observable<DeviceModel> {
+        console.log(params)
+        return this.http
+            .post<DeviceEntity>(`${API_BASE_URL}/device/`, params, { headers: get_post_headers() })
             .pipe(map(this.deviceMapper.mapFrom));
     }
     find(params: {id: number}): Observable<DeviceModel>{
