@@ -16,4 +16,16 @@ services:
       - './.volumes/server/storage:/code/api/storage/local'
       - './.volumes/server/credentials/server:/code/api/storage/credentials/server'
       - './.volumes/server/credentials/clients:/code/api/storage/credentials/clients'
+  mosquitto:
+    image: eclipse-mosquitto:2.0.14
+    hostname: mosquitto
+    volumes:
+      - ./.services/mosquitto:/mosquitto
+      #- ./volumes/server/credentials/server:/mosquitto/certs
+    expose:
+        - "8883"
+        - "9001"
+    ports:
+        - "8883:8883"
+        - "9001:9001"
 
