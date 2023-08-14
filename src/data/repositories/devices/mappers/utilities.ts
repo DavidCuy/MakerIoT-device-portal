@@ -9,7 +9,7 @@ function get_column_filters_params (params: {
     }): HttpParams {
     let sendParams: HttpParams = new HttpParams({fromObject: {
         page: params.page ? params.page : 1,
-        perPage: params.perPage ? params.perPage : 10
+        per_page: params.perPage ? params.perPage : 10
     }})
     for (let valuePair of params.filterByColum ? params.filterByColum : []) {
         sendParams = sendParams.append(valuePair.name, valuePair.value)

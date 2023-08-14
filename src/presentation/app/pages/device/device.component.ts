@@ -13,6 +13,8 @@ import { IndexEntity } from 'src/data/repositories/index/entitites/index-entity'
   styleUrls: ['./device.component.css']
 })
 export class DeviceComponent implements OnInit {
+  PAGE_SIZE: number = 10;
+
   @ViewChild('deviceModalCloseBtn') deviceModalCloseBtn: ElementRef<HTMLElement>
   indexObject: IndexEntity<DeviceModel>;
   devices: DeviceModel[] = []
@@ -22,8 +24,7 @@ export class DeviceComponent implements OnInit {
   newName: string = ''
   newSerial: string = ''
   newDeviceType: number = -1
-  showNext: boolean = false;
-  showPrev: boolean = false;
+  currentPage: number = 1;
 
   constructor(
     private deviceTypeIndexUsecase: DeviceTypeIndexUseCase,
@@ -36,7 +37,7 @@ export class DeviceComponent implements OnInit {
       this.deviceTypes = resp.Data;
     })
 
-    this.deviceIndexUseCase.execute({ relationships: ['deviceType'] }).subscribe((resp) => {
+    this.deviceIndexUseCase.execute({ relationships: ['deviceType'], perPage: this.PAGE_SIZE, page: this.currentPage }).subscribe((resp) => {
       this.indexObject = resp;
       this.devices = this.indexObject.Data;
     })
@@ -50,7 +51,7 @@ export class DeviceComponent implements OnInit {
     }
 
     this.deviceStoreUseCase.execute(body).subscribe(resp => {
-      this.deviceIndexUseCase.execute({ relationships: ['deviceType'] }).subscribe((respIn) => {
+      this.deviceIndexUseCase.execute({ relationships: ['deviceType'], perPage: this.PAGE_SIZE, page: this.currentPage }).subscribe((respIn) => {
         this.devices = respIn.Data;
       })
       this.toastr.success('Se ha creado dispositivo correctamente', 'Correcto').onHidden.subscribe((toastr) => {
@@ -62,4 +63,11 @@ export class DeviceComponent implements OnInit {
     });
   }
 
+  changePage(added_page: number) {
+    this.currentPage = this.currentPage + added_page;
+    this.deviceIndexUseCase.execute({ relationships: ['deviceType'], perPage: this.PAGE_SIZE, page: this.currentPage }).subscribe((resp) => {
+      this.indexObject = resp;
+      this.devices = this.indexObject.Data;
+    })
+  }
 }
