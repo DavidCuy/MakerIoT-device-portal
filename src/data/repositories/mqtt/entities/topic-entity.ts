@@ -1,4 +1,4 @@
-import { MqttMessage } from './MqttMessage.interface'
+import { MqttMessage } from './message-entity'
 import { Subscription } from 'rxjs';
 
 export interface TopicMessage {

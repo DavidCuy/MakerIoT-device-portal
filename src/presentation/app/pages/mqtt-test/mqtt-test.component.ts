@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IMqttMessage } from 'ngx-mqtt';
-import { Subject, Observable, Subscription } from 'rxjs';
-import { MqttManagerService } from '../../services/mqtt-manager.service';
-import { TopicMessage } from '../../interfaces/TopicMessage.interface'
-import { MqttMessage } from '../../interfaces/MqttMessage.interface';
+import { MqttManagerService } from '../../../../domain/services/mqtt-manager.service';
+import { TopicMessage } from 'src/data/repositories/mqtt/entities/topic-entity';
+import { MqttMessage } from 'src/data/repositories/mqtt/entities/message-entity';
 
 @Component({
   selector: 'app-mqtt-test',
@@ -12,9 +11,6 @@ import { MqttMessage } from '../../interfaces/MqttMessage.interface';
 })
 export class MqttTestComponent implements OnInit, OnDestroy {
   select_tabname = 'subscribe'
-  sub_topic_model = '';
-  pub_topic_model = '';
-  pub_text_model = '';
   selected_topic: string = '';
 
   subscribed_topics: Array<string> = [];
@@ -40,17 +36,17 @@ export class MqttTestComponent implements OnInit, OnDestroy {
     this.select_tabname = tabname
   }
 
-  add_topic_subscribe(): void {
-    console.log(`Topic to subscribe ${this.sub_topic_model}`)
-    if (this.subscribed_topics.includes(this.sub_topic_model)) return
+  add_topic_subscribe(input_topic2sub: string): void {
+    console.log(`Topic to subscribe ${input_topic2sub}`)
+    if (this.subscribed_topics.includes(input_topic2sub)) return
 
-    this.subscribed_topics.unshift(this.sub_topic_model);
-    this.selected_topic = this.sub_topic_model
+    this.subscribed_topics.unshift(input_topic2sub);
+    this.selected_topic = input_topic2sub
 
     const selected_tm: TopicMessage = {
       topic: this.selected_topic,
       messages: [],
-      subscription: this.mqttManager.subscribe(this.sub_topic_model).subscribe((message: IMqttMessage) => {
+      subscription: this.mqttManager.subscribe(input_topic2sub).subscribe((message: IMqttMessage) => {
         if (new Date().getTime() - this.prevMillis < 100) return
         this.prevMillis = new Date().getTime()
         const wildcard_topics = this.subscribed_topics.filter(m => this.mqttManager.wildcard(message.topic, m) !== null )
@@ -83,8 +79,6 @@ export class MqttTestComponent implements OnInit, OnDestroy {
     if(search_tm !== null && search_tm !== undefined) {
       this.displayed_messages = search_tm.messages
     }
-
-    this.sub_topic_model = '';
   }
 
   select_topic(topic: string) {
@@ -108,8 +102,8 @@ export class MqttTestComponent implements OnInit, OnDestroy {
     console.log(this.topic_messages)
   }
 
-  publish_to_topic() {
-    this.mqttManager.publish(this.pub_topic_model, this.pub_text_model);
+  publish_to_topic(topic2publish: string, text2publish: string) {
+    this.mqttManager.publish(topic2publish, text2publish);
 
   }
 
