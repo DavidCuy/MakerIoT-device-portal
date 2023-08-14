@@ -25,6 +25,7 @@ export class DeviceComponent implements OnInit {
   newSerial: string = ''
   newDeviceType: number = -1
   currentPage: number = 1;
+  searchName: string = ''
 
   constructor(
     private deviceTypeIndexUsecase: DeviceTypeIndexUseCase,
@@ -68,6 +69,26 @@ export class DeviceComponent implements OnInit {
     this.deviceIndexUseCase.execute({ relationships: ['deviceType'], perPage: this.PAGE_SIZE, page: this.currentPage }).subscribe((resp) => {
       this.indexObject = resp;
       this.devices = this.indexObject.Data;
+    })
+  }
+
+  search(input: string) {
+    if (input.length > 0 && input.length <= 3) return
+
+    if (input.length == 0) {
+      this.currentPage = 1
+      this.deviceIndexUseCase.execute({ relationships: ['deviceType'], perPage: this.PAGE_SIZE, page: this.currentPage }).subscribe((resp) => {
+        this.indexObject = resp;
+        this.devices = this.indexObject.Data;
+      })
+    }
+
+    let serachByColum = [{name: 'name', value: input}]
+
+    this.deviceIndexUseCase.execute({ relationships: ['deviceType'], perPage: this.PAGE_SIZE, page: this.currentPage, searchByColumn: serachByColum }).subscribe((resp) => {
+      this.indexObject = resp;
+      this.devices = this.indexObject.Data;
+      this.currentPage = 1
     })
   }
 }

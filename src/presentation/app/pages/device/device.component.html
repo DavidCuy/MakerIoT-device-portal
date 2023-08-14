@@ -10,6 +10,14 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-12 mt-5">
+            <div class="input-group input-group-sm input-group-outline my-3">
+                <label class="form-label">Búsqueda</label>
+                <input type="text" class="form-control" (keyup)="search(searchInput.value)" #searchInput>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="row shedules-container">
             <div class="col-lg-4 col-md-6 col-sm-12 col-bottom-1rem" *ngFor="let device of devices">
                 <div class="card card-frame">
@@ -58,7 +66,7 @@
     <div class="row">
         <nav aria-label="Page navigation example">
             <ul class="pagination float-right">
-              <li class="page-item" *ngIf="indexObject.Links.prev != null">
+              <li class="page-item" *ngIf="indexObject?.Links?.prev != null">
                 <a class="page-link" href="javascript:;" aria-label="Previous"  (click)="changePage(-1)">
                   <span class="material-icons">
                     keyboard_arrow_left
@@ -67,7 +75,7 @@
                 </a>
               </li>
               <li class="page-item">
-                <a class="page-link" href="javascript:;" aria-label="Next" *ngIf="indexObject.Links.next != null"  (click)="changePage(1)">
+                <a class="page-link" href="javascript:;" aria-label="Next" *ngIf="indexObject?.Links?.next != null"  (click)="changePage(1)">
                   <span class="material-icons">
                     keyboard_arrow_right
                   </span>

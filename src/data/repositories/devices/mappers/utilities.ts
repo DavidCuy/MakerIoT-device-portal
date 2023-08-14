@@ -15,7 +15,7 @@ function get_column_filters_params (params: {
         sendParams = sendParams.append(valuePair.name, valuePair.value)
     }
     for (let valuePair of params.searchByColumn ? params.searchByColumn : []) {
-        sendParams = sendParams.append(`search-${valuePair.name}`, valuePair.value)
+        sendParams = sendParams.append(`search-${valuePair.name}`, `*${valuePair.value}*`)
     }
     for (let relation of params.relationships ? params.relationships : []){
         sendParams = sendParams.append('relationships', relation)
