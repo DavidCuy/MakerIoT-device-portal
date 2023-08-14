@@ -32,18 +32,13 @@
                         </div>
 
                         <div class="row mt-3">
-                            <div class="col-lg-4 col-md-6 col-sm-12 text-center">
+                            <div class="col-md-6 col-sm-12 text-center">
                                 <button class="btn btn-icon btn-2 btn-info btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Configuracion" data-container="body" data-animation="true">
                                   <span class="btn-inner--icon"><i class="material-icons">settings</i></span>
                               </button>
                             </div>
-                            <div class="col-lg-4 col-md-6 col-sm-12 text-center">
-                                <button class="btn btn-icon btn-2 btn-warning btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar" data-container="body" data-animation="true">
-                                <span class="btn-inner--icon"><i class="material-icons">edit</i></span>
-                            </button>
-                            </div>
-                            <div class="col-lg-4 col-md-12 col-sm-12 text-center">
-                                <button class="btn btn-icon btn-2 btn-danger btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" data-container="body" data-animation="true">
+                            <div class="col-md-6 col-sm-12 text-center">
+                                <button class="btn btn-icon btn-2 btn-danger btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" data-container="body" data-animation="true" (click)="delete_device(device.id)">
                               <span class="btn-inner--icon"><i class="material-icons">delete</i></span>
                           </button>
                             </div>

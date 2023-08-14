@@ -11,4 +11,5 @@ export abstract class DeviceRepository {
     }): Observable<IndexEntity<DeviceModel>>;
     abstract store(params: {id_device_type: number, name: string, serial: string}): Observable<DeviceModel>;
     abstract find(params: {id: number}): Observable<DeviceModel>;
+    abstract delete(params: {id: number}): Observable<null>;
 }

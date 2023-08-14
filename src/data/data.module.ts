@@ -6,6 +6,7 @@ import { DeviceRepository } from 'src/domain/repositories/device.repository';
 import { DeviceIndexUseCase } from 'src/domain/usecases/device/index.usecase';
 import { DeviceStoreUseCase } from 'src/domain/usecases/device/store.usecase';
 import { DeviceFindUseCase } from 'src/domain/usecases/device/find.usecase';
+import { DeviceDeleteUseCase } from 'src/domain/usecases/device/delete.usecase';
 import { DeviceImplementationRepository } from './repositories/devices/device-implementation.repository';
 
 import { DeviceTypeRepository } from 'src/domain/repositories/deviceType.repository';
@@ -33,6 +34,13 @@ const deviceFindUseCaseFactory =
 export const deviceFindUseCaseProvider = {
     provide: DeviceFindUseCase,
     useFactory: deviceFindUseCaseFactory,
+    deps: [DeviceRepository],
+};
+const deviceDeleteUseCaseFactory =
+(deviceRepo: DeviceRepository) => new DeviceDeleteUseCase(deviceRepo);
+export const deviceDeleteUseCaseProvider = {
+    provide: DeviceDeleteUseCase,
+    useFactory: deviceDeleteUseCaseFactory,
     deps: [DeviceRepository],
 };
 
@@ -65,6 +73,7 @@ export const deviceTypeFindUseCaseProvider = {
         deviceIndexUseCaseProvider,
         deviceStoreUseCaseProvider,
         deviceFindUseCaseProvider,
+        deviceDeleteUseCaseProvider,
         deviceTypeFindUseCaseProvider,
         deviceTypeIndexUseCaseProvider,
         deviceTypeStoreUseCaseProvider,

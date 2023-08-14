@@ -45,4 +45,7 @@ export class DeviceImplementationRepository extends DeviceRepository {
         return this.http.get<DeviceEntity>('https://example.com/user', {params}).pipe(
             map(this.deviceMapper.mapFrom));
     }
+    delete(params: {id: number}): Observable<null>{
+        return this.http.delete<null>(`${API_BASE_URL}/device/${params.id}`);
+    }
 }

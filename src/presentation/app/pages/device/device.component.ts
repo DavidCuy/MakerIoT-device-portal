@@ -3,10 +3,11 @@ import { ToastrService } from 'ngx-toastr';
 import { DeviceTypeIndexUseCase } from 'src/domain/usecases/deviceType/index.usecase';
 import { DeviceIndexUseCase } from 'src/domain/usecases/device/index.usecase';
 import { DeviceStoreUseCase } from 'src/domain/usecases/device/store.usecase';
+import { DeviceDeleteUseCase } from 'src/domain/usecases/device/delete.usecase';
 import { DeviceModel } from 'src/domain/models/device.model';
 import { DeviceTypeModel } from 'src/domain/models/deviceType.model';
 import { IndexEntity } from 'src/data/repositories/index/entitites/index-entity';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-device',
   templateUrl: './device.component.html',
@@ -31,6 +32,7 @@ export class DeviceComponent implements OnInit {
     private deviceTypeIndexUsecase: DeviceTypeIndexUseCase,
     private deviceIndexUseCase: DeviceIndexUseCase,
     private deviceStoreUseCase: DeviceStoreUseCase,
+    private deviceDeleteUseCase: DeviceDeleteUseCase,
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -89,6 +91,27 @@ export class DeviceComponent implements OnInit {
       this.indexObject = resp;
       this.devices = this.indexObject.Data;
       this.currentPage = 1
+    })
+  }
+
+  delete_device(id: number) {
+    Swal.fire({
+      title: '¿Seguro que desea eliminar?',
+      showDenyButton: true,
+      confirmButtonText: 'Aceptar',
+      denyButtonText: `Cancelar`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.deviceDeleteUseCase.execute({id: id}).subscribe(() => {
+          Swal.fire('Se ha eliminado!', '', 'success')
+          this.deviceIndexUseCase.execute({ relationships: ['deviceType'], perPage: this.PAGE_SIZE, page: this.currentPage }).subscribe((resp) => {
+            this.indexObject = resp;
+            this.devices = this.indexObject.Data;
+            this.currentPage = 1
+          })
+        })
+      }
     })
   }
 }
