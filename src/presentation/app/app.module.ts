@@ -16,7 +16,6 @@ import { environment as env } from '../../environments/environment';
 import { ConfigComponent } from './pages/config/config.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { DeviceComponent } from './pages/device/device.component';
 import { HttpClientModule } from '@angular/common/http';
 import { DataModule } from 'src/data/data.module';
 
@@ -56,8 +55,7 @@ if (hostIP !== null) {
     ConfigbarComponent,
     DashboardComponent,
     MqttCredentialComponent,
-    ConfigComponent,
-    DeviceComponent
+    ConfigComponent
   ],
   imports: importModules,
   providers: [],

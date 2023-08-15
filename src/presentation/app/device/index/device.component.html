@@ -1,0 +1,130 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary float-right" style="float: right" data-bs-toggle="modal" data-bs-target="#deviceModal">Nuevo dispositivo</button>
+        </div>
+    </div>
+    <div class="row" *ngIf="devices.length < 1">
+        <div class="col-12 mt-5">
+            <h2 class="text-center">No hay dispositivos configurados. Agregue uno para comenzar</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="input-group input-group-sm input-group-outline my-3">
+                <label class="form-label">Búsqueda</label>
+                <input type="text" class="form-control" (keyup)="search(searchInput.value)" #searchInput>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row shedules-container">
+            <div class="col-lg-4 col-md-6 col-sm-12 col-bottom-1rem" *ngFor="let device of devices">
+                <div class="card card-frame">
+                    <div class="card-body">
+                        <h3>{{ device.name }}</h3>
+
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <span><b># Serie:</b></span><br>
+                                <span>{{ device.serial }}</span>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6 col-sm-12 text-center">
+                                <button class="btn btn-icon btn-2 btn-info btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Configuracion" data-container="body" data-animation="true">
+                                  <span class="btn-inner--icon"><i class="material-icons">settings</i></span>
+                              </button>
+                            </div>
+                            <div class="col-md-6 col-sm-12 text-center">
+                                <button class="btn btn-icon btn-2 btn-danger btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" data-container="body" data-animation="true" (click)="delete_device(device.id)">
+                              <span class="btn-inner--icon"><i class="material-icons">delete</i></span>
+                          </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="dark horizontal my-0">
+                    <div class="card-footer">
+                        <div><b>Tipo de dispositivo</b></div>
+                        <div class="d-flex">
+                            <a href="javascript:void(0)">
+                                <span class="badge bg-gradient-secondary">{{ device?.deviceType?.name }}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination float-right">
+              <li class="page-item" *ngIf="indexObject?.Links?.prev != null">
+                <a class="page-link" href="javascript:;" aria-label="Previous"  (click)="changePage(-1)">
+                  <span class="material-icons">
+                    keyboard_arrow_left
+                  </span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:;" aria-label="Next" *ngIf="indexObject?.Links?.next != null"  (click)="changePage(1)">
+                  <span class="material-icons">
+                    keyboard_arrow_right
+                  </span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+    </div>
+</div>
+
+<div class="modal fade" id="deviceModal" tabindex="-1" role="dialog" aria-labelledby="deviceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-normal" id="deviceModalLabel">Dispositivo</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-outline my-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="name" [(ngModel)]="newName">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-outline my-3">
+                            <label class="form-label">No. de Serie</label>
+                            <input type="text" class="form-control" name="serialNumber" [(ngModel)]="newSerial">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-static mb-4">
+                            <label for="deviceTypeSelect" class="ms-0">Seleccione el tipo</label>
+                            <select class="form-control" id="deviceTypeSelect" name="id_deviceType" [(ngModel)]="newDeviceType">
+                              <option [value]="deviceType.id" *ngFor="let deviceType of deviceTypes">{{deviceType.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal" #deviceModalCloseBtn>Cerrar</button>
+                <button type="button" class="btn bg-gradient-primary" (click)="createDevice()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
