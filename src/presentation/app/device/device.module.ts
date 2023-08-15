@@ -4,12 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { DeviceRoutingModule } from './device-routing.module';
 
 import { DeviceComponent } from './index/device.component';
+import { DeviceConfigComponent } from './config/device-config.component';
 
 
 
 @NgModule({
   declarations: [
-    DeviceComponent
+    DeviceComponent,
+    DeviceConfigComponent
   ],
   imports: [
     CommonModule,
