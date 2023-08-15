@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { MqttCredentialComponent } from './pages/mqtt-credential/mqtt-credential.component';
+import { MqttCredentialComponent } from './mqtt-client/mqtt-credential/mqtt-credential.component';
 import { ConfigComponent } from './pages/config/config.component';
 import { DeviceComponent } from './pages/device/device.component';
 
