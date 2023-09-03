@@ -49,7 +49,7 @@ export class SidebarComponent implements OnInit, DoCheck {
         }, {
           title: 'Gestor de credenciales',
           name: 'credential-manager',
-          url: '/mqtt-credential-manager'
+          url: '/mqtt-client/credential-manager'
         }]
       })
     }
