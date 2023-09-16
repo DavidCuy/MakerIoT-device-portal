@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export let hostIP = localStorage.getItem('hostIP')
+export let mqtt_client_config = JSON.parse(localStorage.getItem('mqtt-client') ?? '{}')
 
 export const environment = {
   production: false,

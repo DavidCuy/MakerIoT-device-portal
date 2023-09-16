@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12">
-        <h4>Configuración</h4>
+        <h4>Cliente MQTT</h4>
     </div>
 </div>
 
@@ -9,11 +9,51 @@
         <div class="card">
             <div class="tabs-container card-body">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': hostIP != ''}">
-                            <label class="form-label">IP del host</label>
-                            <input type="text" class="form-control" [(ngModel)]="hostIP">
+                    <div class="col-md-8 col-sm-6">
+                        <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': mqtt_config_client.host != ''}">
+                            <label class="form-label">Host</label>
+                            <input type="text" class="form-control" [(ngModel)]="mqtt_config_client.host">
                         </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': mqtt_config_client.port != 0}">
+                            <label class="form-label">Puerto</label>
+                            <input type="text" class="form-control" [(ngModel)]="mqtt_config_client.port">
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="userpasscheck" [checked]="show_userpass" (change)="show_userpass=!show_userpass">
+                            <label class="custom-control-label" for="userpasscheck">Mostrar informacion de usuario/password</label>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="show_userpass">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': mqtt_config_client.username != ''}">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" [(ngModel)]="mqtt_config_client.username">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': mqtt_config_client.password != ''}">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" [(ngModel)]="mqtt_config_client.password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': mqtt_config_client.client_id != ''}">
+                                <label class="form-label">Mqtt Client Id</label>
+                                <input type="text" class="form-control" [(ngModel)]="mqtt_config_client.client_id">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
                         <button type="button" class="btn btn-primary" (click)="save_settings()">Guardar</button>
                     </div>
                 </div>
