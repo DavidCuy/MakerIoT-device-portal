@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment as env } from '../../../../environments/environment';
 import { MqttClientConfigModel } from 'src/domain/models/clientConfig.model';
 import { ToastrService } from 'ngx-toastr';
 import { NavigationEnd, Router } from '@angular/router';
@@ -14,7 +13,8 @@ export class ConfigComponent implements OnInit {
 
   mqtt_config_client: MqttClientConfigModel = {
     host: '',
-    port: 0
+    port: 0,
+    protocol: 'ws'
   }
   show_userpass: boolean = false
 

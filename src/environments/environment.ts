@@ -2,18 +2,11 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export let hostIP = localStorage.getItem('hostIP')
-export let mqtt_client_config = JSON.parse(localStorage.getItem('mqtt-client') ?? '{}')
-
 export const environment = {
   production: false,
-  hostIP: hostIP,
+  hostIP: 'localhost',
   apiPort: 5000,
   stage: 'dev',
-  mqtt: {
-    protocol: 'ws',
-    port: 9001
-  },
 };
 
 export const API_BASE_URL: string = `http://${environment.hostIP}:${environment.apiPort}/${environment.stage}`

@@ -12,12 +12,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MqttCredentialComponent } from './mqtt-client/mqtt-credential/mqtt-credential.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
-import { environment as env } from '../../environments/environment';
 import { ConfigComponent } from './pages/config/config.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { DataModule } from 'src/data/data.module';
+import { MqttClientConfigImplementationRepository } from '../../data/repositories/mqtt/client-config-implementation.repository';
+import { MqttClientConfigModel } from '../../domain/models/clientConfig.model';
 
 
 const importModules: (typeof BrowserModule | typeof AppRoutingModule | ModuleWithProviders<MqttModule> | ModuleWithProviders<ToastrModule>  ) [] = [
@@ -31,14 +32,12 @@ const importModules: (typeof BrowserModule | typeof AppRoutingModule | ModuleWit
   ToastrModule.forRoot()
 ]
 
-const hostIP = localStorage.getItem('hostIP')
-
-if (hostIP !== null) {
-  env.hostIP = hostIP
+const mqtt_client_config: MqttClientConfigModel = new MqttClientConfigImplementationRepository().read();
+if (mqtt_client_config.host !== null) {
   const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-    hostname: env.hostIP,
-    port: env.mqtt.port,
-    protocol: (env.mqtt.protocol === 'wss') ? 'wss' : 'ws',
+    hostname: mqtt_client_config.host,
+    port: mqtt_client_config.port,
+    protocol: (mqtt_client_config.protocol === 'wss') ? 'wss' : 'ws',
     path: '',
   };
 

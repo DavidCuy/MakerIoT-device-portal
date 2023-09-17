@@ -1,6 +1,6 @@
-import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment as env } from 'src/environments/environment';
+import { MqttClientConfigImplementationRepository } from 'src/data/repositories/mqtt/client-config-implementation.repository';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -11,6 +11,11 @@ export class SidebarComponent implements OnInit, DoCheck {
   @Output() breadcrumbs_emitter = new EventEmitter<string[]>();
 
   router_active = '';
+  mqtt_config_client = {
+    host: '',
+    port: 0,
+    protocol: 'ws'
+  }
 
   menu_items: Array<any> = [
     {
@@ -33,11 +38,12 @@ export class SidebarComponent implements OnInit, DoCheck {
     }
   ]
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, mqtt_config_imp: MqttClientConfigImplementationRepository) {
+    this.mqtt_config_client = mqtt_config_imp.read()
+  }
 
   ngOnInit(): void {
-    console.log(env.hostIP)
-    if (env.hostIP != '' && env.hostIP != null) {
+    if (this.mqtt_config_client.host === undefined) {
       this.menu_items.push({
         title: 'MQTT',
         name: 'mqtt',

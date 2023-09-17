@@ -8,6 +8,7 @@ export class MqttClientConfigRepositoryMapper extends Mapper<MqttClientConfigEnt
         return {
             host: param.host,
             port: param.port,
+            protocol: param.protocol,
             username: param.username,
             password: param.password,
             client_id: param.client_id
@@ -17,6 +18,7 @@ export class MqttClientConfigRepositoryMapper extends Mapper<MqttClientConfigEnt
         return {
             host: param.host,
             port: param.port,
+            protocol: param.protocol,
             username: param.username,
             password: param.password,
             client_id: param.client_id
