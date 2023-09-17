@@ -11,7 +11,7 @@ export class MqttClientConfigImplementationRepository extends MqttClientConfigRe
     constructor() {
         super();
     }
-    read(params: {}): MqttClientConfigModel {
+    read(): MqttClientConfigModel {
         return this.mqttClientConfigMapper.mapFrom(JSON.parse(localStorage.getItem('mqtt-client') ?? '{}'))
     }
     save(params: {

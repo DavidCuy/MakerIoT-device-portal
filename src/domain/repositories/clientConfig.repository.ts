@@ -1,6 +1,6 @@
 import { MqttClientConfigModel } from '../models/clientConfig.model';
 export abstract class MqttClientConfigRepository {
-    abstract read(params: {}): MqttClientConfigModel;
+    abstract read(): MqttClientConfigModel;
     abstract save(params: {
         host: string,
         port: number,

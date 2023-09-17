@@ -3,6 +3,7 @@ import { environment as env } from '../../../../environments/environment';
 import { MqttClientConfigModel } from 'src/domain/models/clientConfig.model';
 import { ToastrService } from 'ngx-toastr';
 import { NavigationEnd, Router } from '@angular/router';
+import { MqttClientConfigImplementationRepository } from 'src/data/repositories/mqtt/client-config-implementation.repository';
 
 @Component({
   selector: 'app-config',
@@ -11,29 +12,34 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class ConfigComponent implements OnInit {
 
-  hostIP = ''
   mqtt_config_client: MqttClientConfigModel = {
     host: '',
     port: 0
   }
   show_userpass: boolean = false
 
-  constructor(private toastr: ToastrService) { }
+  constructor(private toastr: ToastrService, private mqttClientConfigServices: MqttClientConfigImplementationRepository) {
+    this.mqtt_config_client = this.mqttClientConfigServices.read()
+  }
 
   ngOnInit(): void {
-    let cur_hostIP = localStorage.getItem('hostIP')
-    if (cur_hostIP != null) {
-      this.hostIP = cur_hostIP
+    console.log(this.mqtt_config_client);
+    if(this.mqtt_config_client.username != undefined ||
+    this.mqtt_config_client.password != undefined ||
+    this.mqtt_config_client.client_id != undefined) {
+      this.show_userpass = true
     }
   }
 
   save_settings(): void {
-    if (this.hostIP === '') {
-      this.toastr.error('No se puede dejar el host vacio', 'Error')
+    if (this.mqtt_config_client.host === '' || this.mqtt_config_client.port === 0) {
+      this.toastr.error('No se puede dejar el host, ni el puerto vacío', 'Error')
       return
     }
-    localStorage.setItem('hostIP', this.hostIP)
-    env.hostIP = this.hostIP
+    this.mqtt_config_client.username = (this.mqtt_config_client.username == '') ? undefined : this.mqtt_config_client.username;
+    this.mqtt_config_client.password = (this.mqtt_config_client.password == '') ? undefined : this.mqtt_config_client.password;
+    this.mqtt_config_client.client_id = (this.mqtt_config_client.client_id == '') ? undefined : this.mqtt_config_client.client_id;
+    this.mqttClientConfigServices.save(this.mqtt_config_client);
     this.toastr.success('Se ha guardado la configuracion', 'Correcto').onHidden.subscribe((toastr) => window.location.reload())
   }
 

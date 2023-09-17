@@ -18,7 +18,7 @@
                     <div class="col-md-4 col-sm-6">
                         <div class="input-group input-group-dynamic mb-4" [ngClass]="{'is-filled': mqtt_config_client.port != 0}">
                             <label class="form-label">Puerto</label>
-                            <input type="text" class="form-control" [(ngModel)]="mqtt_config_client.port">
+                            <input type="number" class="form-control" [(ngModel)]="mqtt_config_client.port">
                         </div>
                     </div>
                     <div class="col-12 mb-4">
