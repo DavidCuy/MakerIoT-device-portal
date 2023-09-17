@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MqttManagerService } from '../../../../domain/services/mqtt-manager.service';
 import { MqttMessage } from 'src/data/repositories/mqtt/entities/message-entity';
+import { MqttClientConfigImplementationRepository } from 'src/data/repositories/mqtt/client-config-implementation.repository';
 import { Subscription } from 'rxjs';
+import { MqttClientConfigModel } from 'src/domain/models/clientConfig.model';
 
 @Component({
   selector: 'app-mqtt-test',
@@ -17,15 +19,25 @@ export class MqttTestComponent implements OnInit, OnDestroy {
 
   current_topic_sub: Subscription;
 
-  constructor(public mqttManager: MqttManagerService) {
+  mqtt_config_client: MqttClientConfigModel = {
+    host: '',
+    port: 0,
+    protocol: 'ws'
   }
 
-  ngOnInit(): void {}
+  constructor(private mqtt_client_config_imp: MqttClientConfigImplementationRepository, public mqttManager: MqttManagerService) {
+    this.mqtt_config_client = this.mqtt_client_config_imp.read()
+  }
+
+  ngOnInit(): void {
+    this.mqttManager.connect(this.mqtt_config_client);
+  }
 
   ngOnDestroy(): void {
       this.mqttManager.all_topic_messages.forEach((tm) => {
         this.mqttManager.remove_topic_subscription(tm.topic)
       })
+      this.mqttManager.disconnect()
   }
 
   tabname_selected(tabname: string): void {

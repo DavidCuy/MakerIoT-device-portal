@@ -35,10 +35,7 @@ const importModules: (typeof BrowserModule | typeof AppRoutingModule | ModuleWit
 const mqtt_client_config: MqttClientConfigModel = new MqttClientConfigImplementationRepository().read();
 if (mqtt_client_config.host !== null) {
   const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-    hostname: mqtt_client_config.host,
-    port: mqtt_client_config.port,
-    protocol: (mqtt_client_config.protocol === 'wss') ? 'wss' : 'ws',
-    path: '',
+    connectOnCreate: false
   };
 
   const mqttModule = MqttModule.forRoot(MQTT_SERVICE_OPTIONS)

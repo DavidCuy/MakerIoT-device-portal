@@ -43,7 +43,7 @@ export class SidebarComponent implements OnInit, DoCheck {
   }
 
   ngOnInit(): void {
-    if (this.mqtt_config_client.host === undefined) {
+    if (this.mqtt_config_client.host !== undefined) {
       this.menu_items.push({
         title: 'MQTT',
         name: 'mqtt',

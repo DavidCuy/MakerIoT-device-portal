@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject, map } from 'rxjs';
-import { MqttService, IMqttMessage, IOnConnectEvent, IOnErrorEvent } from 'ngx-mqtt';
+import { ToastrService } from 'ngx-toastr';
+import { MqttService, IMqttMessage, IOnConnectEvent, IOnErrorEvent, IMqttServiceOptions } from 'ngx-mqtt';
 import { TopicMessage } from 'src/data/repositories/mqtt/entities/topic-entity';
 import { MqttMessage } from 'src/data/repositories/mqtt/entities/message-entity';
+import { MqttClientConfigModel } from '../models/clientConfig.model';
 
 
 @Injectable({
@@ -16,7 +18,7 @@ export class MqttManagerService {
   public all_subscribed_topics: Array<string> = [];
   public selected_topic_str: string = '';
 
-  constructor(private _mqttService: MqttService) {
+  constructor(private toastr: ToastrService, private _mqttService: MqttService) {
     this._mqttService.onConnect.subscribe(async (connectStatus: IOnConnectEvent) => {
       console.log('CONNECT MQTT');
       console.log(connectStatus);
@@ -30,6 +32,7 @@ export class MqttManagerService {
     this._mqttService.onError.subscribe(async (error: IOnErrorEvent) => {
       console.error('ERROR MQTT');
       console.error(error);
+      this.toastr.error('Ocurrio un error, al intentar conectar. Revise su configuracion', 'MQTT Error')
     });
 
     this._mqttService.onEnd.subscribe((connectStatus: any) => {
@@ -41,6 +44,24 @@ export class MqttManagerService {
       console.warn('OFFLINE MQTT');
       console.warn(connectStatus);
     });
+  }
+
+  public connect(mqtt_config_client: MqttClientConfigModel): void {
+    const options: IMqttServiceOptions = {
+      hostname: mqtt_config_client.host,
+      port: mqtt_config_client.port,
+      protocol: (mqtt_config_client.protocol === 'wss') ? 'wss' : 'ws',
+      path: '',
+    }
+    try {
+      this._mqttService.connect(options);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  public disconnect(): void {
+    this._mqttService.disconnect()
   }
 
   public publish(topic: string, message: any): void {

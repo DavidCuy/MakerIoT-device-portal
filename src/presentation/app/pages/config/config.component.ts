@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MqttClientConfigModel } from 'src/domain/models/clientConfig.model';
 import { ToastrService } from 'ngx-toastr';
-import { NavigationEnd, Router } from '@angular/router';
 import { MqttClientConfigImplementationRepository } from 'src/data/repositories/mqtt/client-config-implementation.repository';
 
 @Component({
@@ -23,7 +22,6 @@ export class ConfigComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.mqtt_config_client);
     if(this.mqtt_config_client.username != undefined ||
     this.mqtt_config_client.password != undefined ||
     this.mqtt_config_client.client_id != undefined) {
