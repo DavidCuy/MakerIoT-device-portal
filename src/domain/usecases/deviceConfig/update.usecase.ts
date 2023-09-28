@@ -1,0 +1,30 @@
+import { Observable } from 'rxjs';
+import { UseCase } from '../../../base/use-case';
+import { DeviceConfigModel } from '../../models/deviceConfig.model';
+import { DeviceConfigRepository } from '../../repositories/deviceConfig.repository';
+export class DeviceConfigUpdateUseCase implements UseCase<{
+        _id: string,
+        name: string,
+        device_id: number,
+        input_topic: string,
+        input_json: any,
+        output_json: any,
+        output_topic: string,
+        updated_at: string
+    }, DeviceConfigModel> {
+    constructor(private deviceConfigRepository: DeviceConfigRepository) { }
+    execute(
+        params: {
+            _id: string,
+            name: string,
+            device_id: number,
+            input_topic: string,
+            input_json: any,
+            output_json: any,
+            output_topic: string,
+            updated_at: string
+        },
+    ): Observable<DeviceConfigModel> {
+        return this.deviceConfigRepository.update(params);
+    }
+}

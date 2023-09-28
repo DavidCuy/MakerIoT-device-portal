@@ -15,6 +15,13 @@ import { DeviceTypeStoreUseCase } from 'src/domain/usecases/deviceType/store.use
 import { DeviceTypeFindUseCase } from 'src/domain/usecases/deviceType/find.usecase';
 import { DeviceTypeImplementationRepository } from './repositories/devices/deviceType-implementation.repository';
 
+import { DeviceConfigRepository } from 'src/domain/repositories/deviceConfig.repository';
+import { DeviceConfigListByDeviceIdUseCase } from 'src/domain/usecases/deviceConfig/listByDeviceId.usecase';
+import { DeviceConfigStoreUseCase } from 'src/domain/usecases/deviceConfig/store.usecase';
+import { DeviceConfigUpdateUseCase } from 'src/domain/usecases/deviceConfig/update.usecase';
+import { DeviceConfigDeleteUseCase } from 'src/domain/usecases/deviceConfig/delete.usecase';
+import { DeviceConfigImplementationRepository } from './repositories/devices/deviceConfig-implementation.repository';
+
 const deviceIndexUseCaseFactory =
 (deviceRepo: DeviceRepository) => new DeviceIndexUseCase(deviceRepo);
 export const deviceIndexUseCaseProvider = {
@@ -68,6 +75,37 @@ export const deviceTypeFindUseCaseProvider = {
 
 
 
+
+const deviceConfigListByDeviceIdUseCaseFactory =
+(deviceConfigRepo: DeviceConfigRepository) => new DeviceConfigListByDeviceIdUseCase(deviceConfigRepo);
+export const deviceConfigListByDeviceIdUseCaseProvider = {
+    provide: DeviceConfigListByDeviceIdUseCase,
+    useFactory: deviceConfigListByDeviceIdUseCaseFactory,
+    deps: [DeviceConfigRepository],
+};
+const deviceConfigStoreUseCaseFactory =
+(deviceConfigRepo: DeviceConfigRepository) => new DeviceConfigStoreUseCase(deviceConfigRepo);
+export const deviceConfigStoreUseCaseProvider = {
+    provide: DeviceConfigStoreUseCase,
+    useFactory: deviceConfigStoreUseCaseFactory,
+    deps: [DeviceConfigRepository],
+};
+const deviceConfigUpdateUseCaseFactory =
+(deviceConfigRepo: DeviceConfigRepository) => new DeviceConfigUpdateUseCase(deviceConfigRepo);
+export const deviceConfigUpdateUseCaseProvider = {
+    provide: DeviceConfigUpdateUseCase,
+    useFactory: deviceConfigUpdateUseCaseFactory,
+    deps: [DeviceConfigRepository],
+};
+const deviceConfigDeleteUseCaseFactory =
+(deviceConfigRepo: DeviceConfigRepository) => new DeviceConfigDeleteUseCase(deviceConfigRepo);
+export const deviceConfigDeleteUseCaseProvider = {
+    provide: DeviceConfigDeleteUseCase,
+    useFactory: deviceConfigDeleteUseCaseFactory,
+    deps: [DeviceConfigRepository],
+};
+
+
 @NgModule({
     providers: [
         deviceIndexUseCaseProvider,
@@ -77,8 +115,13 @@ export const deviceTypeFindUseCaseProvider = {
         deviceTypeFindUseCaseProvider,
         deviceTypeIndexUseCaseProvider,
         deviceTypeStoreUseCaseProvider,
+        deviceConfigListByDeviceIdUseCaseProvider,
+        deviceConfigStoreUseCaseProvider,
+        deviceConfigUpdateUseCaseProvider,
+        deviceConfigDeleteUseCaseProvider,
         { provide: DeviceRepository, useClass: DeviceImplementationRepository },
         { provide: DeviceTypeRepository, useClass: DeviceTypeImplementationRepository },
+        { provide: DeviceConfigRepository, useClass: DeviceConfigImplementationRepository },
     ],
     imports: [
         CommonModule,
