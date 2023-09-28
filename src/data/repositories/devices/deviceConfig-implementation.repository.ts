@@ -23,7 +23,7 @@ export class DeviceConfigImplementationRepository extends DeviceConfigRepository
     }
     store(params: {device_id: number, name: string}): Observable<DeviceConfigModel> {
        return this.http
-            .post<DeviceConfigEntity>(`${API_BASE_URL}/device/${params.device_id}/device-config`, {params})
+            .post<DeviceConfigEntity>(`${API_BASE_URL}/device/${params.device_id}/device-config`, params)
             .pipe(map(this.DeviceConfigMapper.mapFrom));
     }
     update(params: {
@@ -36,10 +36,10 @@ export class DeviceConfigImplementationRepository extends DeviceConfigRepository
         output_topic: string,
         updated_at: string
     }): Observable<DeviceConfigModel>{
-        return this.http.get<DeviceConfigEntity>(`${API_BASE_URL}/device/${params.device_id}/device-config`, {params}).pipe(
+        return this.http.put<DeviceConfigEntity>(`${API_BASE_URL}/device/${params.device_id}/device-config/${params._id}`, params).pipe(
             map(this.DeviceConfigMapper.mapFrom));
     }
     delete(params: {_id: string, device_id: number}): Observable<null>{
-        return this.http.get<null>(`${API_BASE_URL}/device/${params.device_id}/device-config`, {params});
+        return this.http.delete<null>(`${API_BASE_URL}/device/${params.device_id}/device-config/${params._id}`);
     }
 }
