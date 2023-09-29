@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { InputDict } from "src/base/inputDict";
 import { UseCase } from '../../../base/use-case';
 import { DeviceConfigModel } from '../../models/deviceConfig.model';
 import { DeviceConfigRepository } from '../../repositories/deviceConfig.repository';
@@ -7,8 +8,8 @@ export class DeviceConfigUpdateUseCase implements UseCase<{
         name: string,
         device_id: number,
         input_topic: string,
-        input_json: any,
-        output_json: any,
+        input_json: InputDict,
+        output_json: InputDict,
         output_topic: string,
         updated_at: string
     }, DeviceConfigModel> {
@@ -19,8 +20,8 @@ export class DeviceConfigUpdateUseCase implements UseCase<{
             name: string,
             device_id: number,
             input_topic: string,
-            input_json: any,
-            output_json: any,
+            input_json: InputDict,
+            output_json: InputDict,
             output_topic: string,
             updated_at: string
         },

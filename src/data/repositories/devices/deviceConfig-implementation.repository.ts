@@ -7,6 +7,7 @@ import { DeviceConfigImplementationRepositoryMapper } from './mappers/deviceConf
 import { DeviceConfigRepository } from 'src/domain/repositories/deviceConfig.repository';
 import { DeviceConfigModel } from 'src/domain/models/deviceConfig.model';
 import { API_BASE_URL } from 'src/environments/environment';
+import { InputDict } from 'src/base/inputDict';
 
 @Injectable({
     providedIn: 'root',
@@ -31,12 +32,21 @@ export class DeviceConfigImplementationRepository extends DeviceConfigRepository
         name: string,
         device_id: number,
         input_topic: string,
-        input_json: any,
-        output_json: any,
+        input_json: InputDict,
+        output_json: InputDict,
         output_topic: string,
         updated_at: string
     }): Observable<DeviceConfigModel>{
-        return this.http.put<DeviceConfigEntity>(`${API_BASE_URL}/device/${params.device_id}/device-config/${params._id}`, params).pipe(
+        const config_id = params._id
+        const device_id = params.device_id
+        const body = {
+            name: params.name,
+            input_topic: params.input_topic,
+            input_json: params.input_json,
+            output_json: params.output_json,
+            output_topic: params.output_topic
+        }
+        return this.http.put<DeviceConfigEntity>(`${API_BASE_URL}/device/${device_id}/device-config/${config_id}`, body).pipe(
             map(this.DeviceConfigMapper.mapFrom));
     }
     delete(params: {_id: string, device_id: number}): Observable<null>{

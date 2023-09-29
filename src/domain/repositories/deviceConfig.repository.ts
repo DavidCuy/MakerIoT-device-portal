@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { InputDict } from "src/base/inputDict";
 import { DeviceConfigModel } from '../models/deviceConfig.model';
 export abstract class DeviceConfigRepository {
     abstract list_by_device_id(params: {
@@ -10,8 +11,8 @@ export abstract class DeviceConfigRepository {
         name: string,
         device_id: number,
         input_topic: string,
-        input_json: any,
-        output_json: any,
+        input_json: InputDict,
+        output_json: InputDict,
         output_topic: string,
         updated_at: string
     }): Observable<DeviceConfigModel>;

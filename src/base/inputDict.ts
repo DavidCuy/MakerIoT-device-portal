@@ -1,0 +1,1 @@
+export interface InputDict{ [key: string] : string }
