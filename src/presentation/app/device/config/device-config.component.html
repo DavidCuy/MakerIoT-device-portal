@@ -54,10 +54,10 @@
                             <div><label><b>Tema de entrada</b></label></div>
                             <label><small>Tema de donde se leera la información entrante de la configuración</small></label>
                             <div class="input-group input-group-outline my-3">
-                                <input type="text" class="form-control" placeholder="Ingrese el tema de entrada" value="{{ selected_config?.input_topic }}" [(ngModel)]="input_topic">
+                                <input type="text" class="form-control" placeholder="Ingrese el tema de entrada" value="{{ selected_config?.input_topic }}" [(ngModel)]="input_topic" [disabled]="input_play">
                             </div>
-                            <button type="button" class="btn btn-primary btn-icon-only rounded-circle btn-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Inicio de captura de mensajes del tema. Igual se puede introducir manualmente en formato json" data-container="body" data-animation="true">
-                                <span class="btn-inner--icon circle-top-correction"><i class="material-icons">play_arrow</i></span>
+                            <button type="button" class="btn btn-primary btn-icon-only rounded-circle btn-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Inicio de captura de mensajes del tema. Igual se puede introducir manualmente en formato json" data-container="body" data-animation="true" (click)="start_input_recording()">
+                                <span class="btn-inner--icon circle-top-correction"><i class="material-icons">{{ input_play ? 'pause' : 'play_arrow' }}</i></span>
                             </button>
                             <div class="input-group input-group-dynamic">
                                 <textarea class="form-control" rows="5" placeholder='{"message": "Hello world"}' spellcheck="false" #inputJsonTextArea></textarea>
@@ -88,7 +88,7 @@
                             <button type="button" class="btn btn-primary mt-3">Publicar</button>
                         </div>
                     </div>
-                    <div class="col-12"><button type="button" class="btn btn-primary mb-1 mt-4 float-right" (click)="update_config()">Guardar</button></div>
+                    <div class="col-12"><button type="button" class="btn btn-primary mb-1 mt-4 float-right" (click)="update_config()" [disabled]="input_play">Guardar</button></div>
                 </div>
             </div>
         </div>

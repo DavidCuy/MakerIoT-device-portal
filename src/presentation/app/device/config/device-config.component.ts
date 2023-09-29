@@ -1,20 +1,23 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { InputDict } from 'src/base/inputDict';
-import { DeviceConfigModel } from 'src/domain/models/deviceConfig.model';
-import { DeviceConfigDeleteUseCase } from 'src/domain/usecases/deviceConfig/delete.usecase';
-import { DeviceConfigListByDeviceIdUseCase } from 'src/domain/usecases/deviceConfig/listByDeviceId.usecase';
-import { DeviceConfigStoreUseCase } from 'src/domain/usecases/deviceConfig/store.usecase';
-import { DeviceConfigUpdateUseCase } from 'src/domain/usecases/deviceConfig/update.usecase';
+import { InputDict } from '../../../../base/inputDict';
+import { DeviceConfigModel } from '../../../../domain/models/deviceConfig.model';
+import { MqttManagerService } from '../../../../domain/services/mqtt-manager.service';
+import { DeviceConfigDeleteUseCase } from '../../../../domain/usecases/deviceConfig/delete.usecase';
+import { DeviceConfigListByDeviceIdUseCase } from '../../../../domain/usecases/deviceConfig/listByDeviceId.usecase';
+import { DeviceConfigStoreUseCase } from '../../../../domain/usecases/deviceConfig/store.usecase';
+import { DeviceConfigUpdateUseCase } from '../../../../domain/usecases/deviceConfig/update.usecase';
+import { MqttClientConfigModel } from 'src/domain/models/clientConfig.model';
 import Swal from 'sweetalert2';
+import { MqttClientConfigImplementationRepository } from 'src/data/repositories/mqtt/client-config-implementation.repository';
 
 @Component({
   selector: 'app-device-config',
   templateUrl: './device-config.component.html',
   styleUrls: ['./device-config.component.css']
 })
-export class DeviceConfigComponent implements OnInit {
+export class DeviceConfigComponent implements OnInit, OnDestroy {
   @ViewChild('deviceConfigModalCloseBtn') deviceConfigModalCloseBtn: ElementRef<HTMLElement>
   @ViewChild('inputJsonTextArea') inputJsonTextArea: ElementRef<HTMLTextAreaElement>
   @ViewChild('outputJsonTextArea') outputJsonTextArea: ElementRef<HTMLTextAreaElement>
@@ -27,6 +30,13 @@ export class DeviceConfigComponent implements OnInit {
   select_tabname = 'input'
 
   input_topic: string;
+  input_play: boolean = false;
+
+  mqtt_config_client: MqttClientConfigModel = {
+    host: '',
+    port: 0,
+    protocol: 'ws'
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -34,8 +44,12 @@ export class DeviceConfigComponent implements OnInit {
     private deviceConfigDeleteUseCase: DeviceConfigDeleteUseCase,
     private deviceConfigStoreUseCase: DeviceConfigStoreUseCase,
     private deviceConfigUpdateUsecase: DeviceConfigUpdateUseCase,
+    private mqtt_client_config_imp: MqttClientConfigImplementationRepository,
+    public mqttManager: MqttManagerService,
     private toastr: ToastrService
-  ) { }
+  ) {
+    this.mqtt_config_client = this.mqtt_client_config_imp.read();
+  }
 
   ngOnInit(): void {
     this.device_id = Number(this.route.snapshot.params['id']);
@@ -47,6 +61,14 @@ export class DeviceConfigComponent implements OnInit {
         this.input_topic = this.deviceConfigs[0].input_topic
       }
     })
+    this.mqttManager.connect(this.mqtt_config_client);
+  }
+
+  ngOnDestroy(): void {
+    this.mqttManager.all_topic_messages.forEach((tm) => {
+      this.mqttManager.remove_topic_subscription(tm.topic)
+    })
+    this.mqttManager.disconnect()
   }
 
   delete_config(id: string) {
@@ -127,5 +149,29 @@ export class DeviceConfigComponent implements OnInit {
       this.selected_config = resp;
       this.toastr.success('Se ha actualizado la configuracion')
     })
+  }
+
+
+  start_input_recording() {
+    if (this.input_topic === "" || this.input_topic === undefined) {
+      this.toastr.error('El tema de entrada no puede ser vacío')
+      return
+    }
+    this.input_play = !this.input_play;
+    if (this.input_play) {
+      if (this.mqttManager.all_subscribed_topics.includes(this.input_topic)) return
+      this.mqttManager.add_topic_to_subscription(this.input_topic)
+
+      this.mqttManager.subscribe(this.input_topic).subscribe((message) => {
+        if (this.input_play) {
+          try {
+            JSON.parse(message.payload.toString())
+            this.inputJsonTextArea.nativeElement.value = message.payload.toString();
+          } catch (e) {
+            this.toastr.warning('El texto recibido no es un json')
+          }
+        }
+      })
+    }
   }
 }
