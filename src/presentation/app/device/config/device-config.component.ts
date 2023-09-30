@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { InputDict } from '../../../../base/inputDict';
 import { DeviceConfigModel } from '../../../../domain/models/deviceConfig.model';
@@ -22,6 +23,8 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
   @ViewChild('inputJsonTextArea') inputJsonTextArea: ElementRef<HTMLTextAreaElement>
   @ViewChild('outputJsonTextArea') outputJsonTextArea: ElementRef<HTMLTextAreaElement>
 
+  @Input() editor_form!: FormGroup;
+
   deviceConfigs: DeviceConfigModel[] = []
   device_id: number;
   newName: string;
@@ -37,6 +40,8 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
     port: 0,
     protocol: 'ws'
   }
+  output_json: any = {}
+  editorFormField: Array<string> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -59,6 +64,15 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
         this.selected_config = this.deviceConfigs[0];
         this.selected_config_str = this.deviceConfigs[0]._id
         this.input_topic = this.deviceConfigs[0].input_topic
+        this.output_json = this.deviceConfigs[0].output_json
+
+        const group: any = {}
+        Object.keys(this.output_json).forEach(key => {
+          group[key] = new FormControl(this.output_json[key]);
+          this.editorFormField.push(key)
+        })
+
+        this.editor_form = new FormGroup(group)
       }
     })
     this.mqttManager.connect(this.mqtt_config_client);
@@ -69,6 +83,10 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
       this.mqttManager.remove_topic_subscription(tm.topic)
     })
     this.mqttManager.disconnect()
+  }
+
+  get_keys_config(): Array<string> {
+    return Object.keys(this.selected_config!.input_json)
   }
 
   delete_config(id: string) {
@@ -116,6 +134,7 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
 
   tabname_selected(view2show: string) {
     this.select_tabname = view2show
+    this.input_play = false
   }
 
   update_config() {
@@ -172,5 +191,31 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+
+  async add_editor_variable() {
+    const { value: variable_key } = await Swal.fire({
+      title: 'Nombre de tu variable',
+      input: 'text',
+      inputLabel: 'Variable',
+      inputValue: '',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return 'El campo no puede ser vacío!'
+        }
+      }
+    })
+
+    if (variable_key) {
+      console.log(variable_key)
+      this.editor_form.addControl(variable_key, new FormControl(""))
+      this.editorFormField.push(variable_key)
+    }
+  }
+
+  delete_editor_variable(key: string) {
+    this.editor_form.removeControl(key)
+    this.editorFormField = this.editorFormField.filter(k => k != key)
   }
 }
