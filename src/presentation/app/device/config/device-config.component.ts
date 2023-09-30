@@ -21,6 +21,7 @@ import { MqttClientConfigImplementationRepository } from 'src/data/repositories/
 export class DeviceConfigComponent implements OnInit, OnDestroy {
   @ViewChild('deviceConfigModalCloseBtn') deviceConfigModalCloseBtn: ElementRef<HTMLElement>
   @ViewChild('inputJsonTextArea') inputJsonTextArea: ElementRef<HTMLTextAreaElement>
+  @ViewChild('editorJsonTextArea') editorJsonTextArea: ElementRef<HTMLTextAreaElement>
   @ViewChild('outputJsonTextArea') outputJsonTextArea: ElementRef<HTMLTextAreaElement>
 
   @Input() editor_form!: FormGroup;
@@ -34,12 +35,14 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
 
   input_topic: string;
   input_play: boolean = false;
+  editor_play: boolean = false;
 
   mqtt_config_client: MqttClientConfigModel = {
     host: '',
     port: 0,
     protocol: 'ws'
   }
+  output_topic: string;
   output_json: any = {}
   editorFormField: Array<string> = [];
 
@@ -64,6 +67,7 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
         this.selected_config = this.deviceConfigs[0];
         this.selected_config_str = this.deviceConfigs[0]._id
         this.input_topic = this.deviceConfigs[0].input_topic
+        this.output_topic = this.deviceConfigs[0].output_topic
         this.output_json = this.deviceConfigs[0].output_json
 
         const group: any = {}
@@ -135,15 +139,19 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
   tabname_selected(view2show: string) {
     this.select_tabname = view2show
     this.input_play = false
+    this.editor_play = false
   }
 
   update_config() {
     let input_json_dict: InputDict = {}
-    let output_json_dict: InputDict = {}
     try{
-      const input_json_element = JSON.parse(this.inputJsonTextArea.nativeElement.value)
-      for (let key of Object.keys(input_json_element)) {
-        input_json_dict[key] = typeof input_json_element[key]
+      if (this.select_tabname === 'input'){
+        const input_json_element = JSON.parse(this.inputJsonTextArea.nativeElement.value)
+        for (let key of Object.keys(input_json_element)) {
+          input_json_dict[key] = typeof input_json_element[key]
+        }
+      } else {
+        input_json_dict = this.selected_config!.input_json;
       }
     } catch(e) {
       console.error(e)
@@ -160,8 +168,8 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
       device_id: this.device_id,
       input_topic: this.input_topic,
       input_json: input_json_dict,
-      output_topic: '',
-      output_json: output_json_dict
+      output_topic: this.output_topic,
+      output_json: this.editor_form.getRawValue()
     }
     this.deviceConfigUpdateUsecase.execute(body).subscribe((resp) => {
       this.selected_config = resp;
@@ -217,5 +225,38 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
   delete_editor_variable(key: string) {
     this.editor_form.removeControl(key)
     this.editorFormField = this.editorFormField.filter(k => k != key)
+  }
+
+  start_editor_recording() {
+    this.editor_play = !this.editor_play;
+    if (this.editor_play) {
+      if (!this.mqttManager.all_subscribed_topics.includes(this.input_topic)) {
+        this.mqttManager.add_topic_to_subscription(this.input_topic)
+      }
+
+      if (this.mqttManager.all_subscribed_topics.includes(this.output_topic)) return
+      this.mqttManager.add_topic_to_subscription(this.output_topic)
+
+      this.mqttManager.subscribe(this.input_topic).subscribe((message) => {
+        if (this.editor_play) {
+          try {
+            this.mqttManager.publish(this.output_topic, JSON.parse(message.payload.toString()))
+          } catch (e) {
+            this.toastr.warning('El texto recibido no es un json')
+          }
+        }
+      })
+
+      this.mqttManager.subscribe(this.output_topic).subscribe((message) => {
+        if (this.editor_play) {
+          try {
+            JSON.parse(message.payload.toString())
+            this.editorJsonTextArea.nativeElement.value = message.payload.toString();
+          } catch (e) {
+            this.toastr.warning('El texto recibido no es un json')
+          }
+        }
+      })
+    }
   }
 }

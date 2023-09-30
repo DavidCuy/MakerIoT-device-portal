@@ -107,6 +107,19 @@
                             <button type="button" class="btn btn-primary btn-icon-only rounded-circle btn-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar variable" data-container="body" data-animation="true" (click)="add_editor_variable()">
                                 <span class="btn-inner--icon circle-top-correction"><i class="material-icons">add</i></span>
                             </button>
+                            <div class="row">
+                                <div><label><b>Tema de Salida</b></label></div>
+                                <label><small>Tema de donde se disponibiliza las operaciones del editor</small></label>
+                                <div class="input-group input-group-outline my-3">
+                                    <input type="text" class="form-control" placeholder="Ingrese el tema de salida" [(ngModel)]="output_topic" [disabled]="editor_play">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-icon-only rounded-circle btn-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Inicio de captura de mensajes del tema de salida" data-container="body" data-animation="true" (click)="start_editor_recording()">
+                                <span class="btn-inner--icon circle-top-correction"><i class="material-icons">{{ editor_play ? 'pause' : 'play_arrow' }}</i></span>
+                            </button>
+                            <div class="input-group input-group-dynamic">
+                                <textarea class="form-control" rows="5" spellcheck="false" disabled #editorJsonTextArea></textarea>
+                            </div>
                         </div>
                         <div class="show-nav-tab" *ngIf="select_tabname=='output'">
                             <div><label><b>Nombre del tema</b></label></div>
@@ -121,7 +134,7 @@
                             <button type="button" class="btn btn-primary mt-3">Publicar</button>
                         </div>
                     </div>
-                    <div class="col-12"><button type="button" class="btn btn-primary mb-1 mt-4 float-right" (click)="update_config()" [disabled]="input_play">Guardar</button></div>
+                    <div class="col-12"><button type="button" class="btn btn-primary mb-1 mt-4 float-right" (click)="update_config()" [disabled]="input_play || editor_play">Guardar</button></div>
                 </div>
             </div>
         </div>
