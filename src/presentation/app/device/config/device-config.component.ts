@@ -10,8 +10,9 @@ import { DeviceConfigListByDeviceIdUseCase } from '../../../../domain/usecases/d
 import { DeviceConfigStoreUseCase } from '../../../../domain/usecases/deviceConfig/store.usecase';
 import { DeviceConfigUpdateUseCase } from '../../../../domain/usecases/deviceConfig/update.usecase';
 import { MqttClientConfigModel } from 'src/domain/models/clientConfig.model';
-import Swal from 'sweetalert2';
 import { MqttClientConfigImplementationRepository } from 'src/data/repositories/mqtt/client-config-implementation.repository';
+import { evaluate } from 'mathjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-device-config',
@@ -240,9 +241,19 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
       this.mqttManager.subscribe(this.input_topic).subscribe((message) => {
         if (this.editor_play) {
           try {
-            this.mqttManager.publish(this.output_topic, JSON.parse(message.payload.toString()))
+            const message_payload = JSON.parse(message.payload.toString())
+            console.log(message_payload)
+            const message_to_publish: any = {}
+
+            for(let key of this.editorFormField) {
+              console.log(this.editor_form.get(key)?.value)
+              message_to_publish[key] = evaluate(this.editor_form.get(key)?.value, message_payload)
+            }
+            console.log(message_to_publish)
+            this.mqttManager.publish(this.output_topic, message_to_publish)
           } catch (e) {
             this.toastr.warning('El texto recibido no es un json')
+            console.error(e)
           }
         }
       })

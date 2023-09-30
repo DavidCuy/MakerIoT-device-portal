@@ -65,7 +65,7 @@ export class MqttManagerService {
   }
 
   public publish(topic: string, message: any): void {
-    this._mqttService.unsafePublish(topic, JSON.stringify(message), {qos: 1, retain: true});
+    this._mqttService.unsafePublish(topic, JSON.stringify(message, null, 4), {qos: 1, retain: true});
   }
 
   public subscribe(topic: string): Observable<IMqttMessage> {
