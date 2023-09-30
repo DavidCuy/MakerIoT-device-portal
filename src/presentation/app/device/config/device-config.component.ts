@@ -142,8 +142,7 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
       input_topic: this.input_topic,
       input_json: input_json_dict,
       output_topic: '',
-      output_json: output_json_dict,
-      updated_at: new Date().toISOString(),
+      output_json: output_json_dict
     }
     this.deviceConfigUpdateUsecase.execute(body).subscribe((resp) => {
       this.selected_config = resp;

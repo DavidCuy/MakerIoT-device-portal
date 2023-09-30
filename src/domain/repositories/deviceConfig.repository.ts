@@ -13,8 +13,7 @@ export abstract class DeviceConfigRepository {
         input_topic: string,
         input_json: InputDict,
         output_json: InputDict,
-        output_topic: string,
-        updated_at: string
+        output_topic: string
     }): Observable<DeviceConfigModel>;
     abstract delete(params: {_id: string, device_id: number}): Observable<null>;
 }
