@@ -8,13 +8,15 @@ export class DeviceTypeImplementationRepositoryMapper extends Mapper<DeviceTypeE
     mapFrom(param: DeviceTypeEntity): DeviceTypeModel {
         return {
             id: param.id,
-            name: param.name
+            name: param.name,
+            enabled_config: param.enabled_config
         };
     }
     mapTo(param: DeviceTypeModel): DeviceTypeModel {
         return {
           id: param.id,
-          name: param.name
+          name: param.name,
+          enabled_config: param.enabled_config
         }
     }
 
@@ -27,7 +29,8 @@ export class DeviceTypeImplementationRepositoryMapper extends Mapper<DeviceTypeE
             Data: params.Data.map((param) => {
                 return {
                     id: param.id,
-                    name: param.name
+                    name: param.name,
+                    enabled_config: param.enabled_config
                   }
             })
         }

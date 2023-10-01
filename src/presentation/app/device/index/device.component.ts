@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DeviceTypeIndexUseCase } from 'src/domain/usecases/deviceType/index.usecase';
 import { DeviceIndexUseCase } from 'src/domain/usecases/device/index.usecase';
@@ -33,7 +34,8 @@ export class DeviceComponent implements OnInit {
     private deviceIndexUseCase: DeviceIndexUseCase,
     private deviceStoreUseCase: DeviceStoreUseCase,
     private deviceDeleteUseCase: DeviceDeleteUseCase,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.deviceTypeIndexUsecase.execute().subscribe((resp) => {
@@ -113,5 +115,14 @@ export class DeviceComponent implements OnInit {
         })
       }
     })
+  }
+
+  navigate_config(device_id: number, device_com: string) {
+    const selected_device = this.devices.find(d => d.id == device_id)
+    if (!selected_device?.deviceType?.enabled_config) {
+      this.toastr.warning('Configuración no disponible')
+      return
+    }
+    this.router.navigate(['/devices', device_id, 'config'], { queryParams: { device_type: 'sensor', device_comunication: device_com }})
   }
 }

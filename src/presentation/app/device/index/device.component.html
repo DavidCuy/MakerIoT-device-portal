@@ -1,7 +1,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-12">
-            <button type="button" class="btn btn-primary float-right" style="float: right" data-bs-toggle="modal" data-bs-target="#deviceModal">Nuevo dispositivo</button>
+            <button type="button" class="btn btn-primary float-right" style="float: right" data-bs-toggle="modal" data-bs-target="#deviceModal">Nuevo sensor</button>
         </div>
     </div>
     <div class="row" *ngIf="devices.length < 1">
@@ -33,13 +33,13 @@
 
                         <div class="row mt-3">
                             <div class="col-md-6 col-sm-12 text-center">
-                                <button class="btn btn-icon btn-2 btn-info btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Configuracion" data-container="body" data-animation="true" [routerLink]="['/devices', device.id, 'config']">
-                                  <span class="btn-inner--icon"><i class="material-icons">settings</i></span>
+                                <button class="btn btn-icon btn-2 btn-info btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Configuracion" data-container="body" data-animation="true" (click)="navigate_config(device.id, device.deviceType!.name)">
+                                  <span class="btn-inner--icon circle-top-correction"><i class="material-icons">settings</i></span>
                               </button>
                             </div>
                             <div class="col-md-6 col-sm-12 text-center">
                                 <button class="btn btn-icon btn-2 btn-danger btn-icon-only rounded-circle" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" data-container="body" data-animation="true" (click)="delete_device(device.id)">
-                              <span class="btn-inner--icon"><i class="material-icons">delete</i></span>
+                              <span class="btn-inner--icon circle-top-correction"><i class="material-icons">delete</i></span>
                           </button>
                             </div>
                         </div>

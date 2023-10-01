@@ -6,13 +6,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { DeviceComponent } from './index/device.component';
 import { DeviceConfigComponent } from './config/device-config.component';
+import { DeviceConfigSensorMqttComponent } from './config/sensor/mqtt/device-config-sensor-mqtt.component';
 
 
 
 @NgModule({
   declarations: [
     DeviceComponent,
-    DeviceConfigComponent
+    DeviceConfigComponent,
+    DeviceConfigSensorMqttComponent
   ],
   imports: [
     CommonModule,
