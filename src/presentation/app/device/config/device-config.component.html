@@ -27,12 +27,12 @@
                         <div class="nav-wrapper position-relative end-0">
                             <ul class="nav nav-pills nav-fill p-1">
                                 <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;" (click)="tabname_selected('input')">
+                                    <a class="nav-link mb-0 px-0 py-1" [ngClass]="{'active': select_tabname == 'input'}" data-bs-toggle="tab" href="javascript:;" (click)="tabname_selected('input')">
                                         <span class="ms-1">Entrada</span>
                                     </a>
                                 </li>   
                                 <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" (click)="tabname_selected('editor')">
+                                    <a class="nav-link mb-0 px-0 py-1 " [ngClass]="{'active': select_tabname == 'editor'}" data-bs-toggle="tab" href="javascript:;" (click)="tabname_selected('editor')">
                                         <span class="ms-1">Editor</span>
                                     </a>
                                 </li>
@@ -109,6 +109,10 @@
                                     <input type="text" class="form-control" placeholder="Ingrese el tema de salida" [(ngModel)]="output_topic" [disabled]="editor_play">
                                 </div>
                             </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="saveMessageCheckbox" [checked]="selected_config!.save_output" (change)="selected_config!.save_output = !selected_config!.save_output">
+                                <label class="form-check-label" for="saveMessageCheckbox">Guardar mensajes</label>
+                              </div>
                             <button type="button" class="btn btn-primary btn-icon-only rounded-circle btn-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Inicio de captura de mensajes del tema de salida" data-container="body" data-animation="true" (click)="start_editor_recording()">
                                 <span class="btn-inner--icon circle-top-correction"><i class="material-icons">{{ editor_play ? 'pause' : 'play_arrow' }}</i></span>
                             </button>

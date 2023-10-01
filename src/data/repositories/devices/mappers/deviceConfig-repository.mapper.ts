@@ -13,6 +13,7 @@ export class DeviceConfigImplementationRepositoryMapper extends Mapper<DeviceCon
             input_json: param.input_json,
             output_json: param.output_json,
             output_topic: param.output_topic,
+            save_output: param.save_output,
             created_at: param.created_at,
             updated_at: param.updated_at
         };
@@ -26,6 +27,7 @@ export class DeviceConfigImplementationRepositoryMapper extends Mapper<DeviceCon
             input_json: param.input_json,
             output_json: param.output_json,
             output_topic: param.output_topic,
+            save_output: param.save_output,
             created_at: param.created_at,
             updated_at: param.updated_at
         }
@@ -42,6 +44,7 @@ export class DeviceConfigImplementationRepositoryMapper extends Mapper<DeviceCon
                 input_json: item.input_json,
                 output_json: item.output_json,
                 output_topic: item.output_topic,
+                save_output: item.save_output,
                 created_at: item.created_at,
                 updated_at: item.updated_at
             })

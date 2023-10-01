@@ -71,16 +71,21 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
         this.output_topic = this.deviceConfigs[0].output_topic
         this.output_json = this.deviceConfigs[0].output_json
 
-        const group: any = {}
-        Object.keys(this.output_json).forEach(key => {
-          group[key] = new FormControl(this.output_json[key]);
-          this.editorFormField.push(key)
-        })
-
-        this.editor_form = new FormGroup(group)
+        this.initialize_formgroup()
       }
     })
     this.mqttManager.connect(this.mqtt_config_client);
+  }
+
+  initialize_formgroup() {
+    const group: any = {}
+    this.editorFormField = []
+    Object.keys(this.output_json).forEach(key => {
+      group[key] = new FormControl(this.output_json[key]);
+      this.editorFormField.push(key)
+    })
+
+    this.editor_form = new FormGroup(group)
   }
 
   ngOnDestroy(): void {
@@ -108,6 +113,15 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
           this.deviceConfigGetByDeviceIdUseCase.execute({device_id: this.device_id}).subscribe((resp) => {
             this.deviceConfigs = resp;
           })
+          if(this.selected_config?._id === id) {
+            this.selected_config = undefined
+            this.selected_config_str = ""
+            this.input_topic = ""
+            this.output_topic = ""
+            this.output_json = null
+            this.select_tabname = "input"
+            this.initialize_formgroup()
+          }
         })
       }
     })
@@ -135,12 +149,29 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
   selected_config_control(id: string) {
     this.selected_config_str = id
     this.selected_config = this.deviceConfigs.find(dc => dc._id === id)
+    if (this.selected_config) {
+      this.selected_config_str = this.selected_config._id
+      this.input_topic = this.selected_config.input_topic
+      this.output_topic = this.selected_config.output_topic
+      this.output_json = this.selected_config.output_json
+      this.initialize_formgroup()
+
+      if (this.input_topic === undefined || this.input_topic === "") {
+        this.select_tabname = 'input'
+      }
+    }
   }
 
   tabname_selected(view2show: string) {
-    this.select_tabname = view2show
     this.input_play = false
     this.editor_play = false
+    if(view2show == 'editor') {
+      if (this.selected_config?.input_topic === undefined || this.selected_config?.input_topic === "") {
+        view2show = 'input'
+        this.toastr.warning('No se puede mostrar el editor sin definir tema de entrada')
+      }
+    }
+    this.select_tabname = view2show
   }
 
   update_config() {
@@ -170,7 +201,8 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
       input_topic: this.input_topic,
       input_json: input_json_dict,
       output_topic: this.output_topic,
-      output_json: this.editor_form.getRawValue()
+      output_json: this.editor_form.getRawValue(),
+      save_output: this.selected_config?.save_output ?? false
     }
     this.deviceConfigUpdateUsecase.execute(body).subscribe((resp) => {
       this.selected_config = resp;

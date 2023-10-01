@@ -34,7 +34,8 @@ export class DeviceConfigImplementationRepository extends DeviceConfigRepository
         input_topic: string,
         input_json: InputDict,
         output_json: InputDict,
-        output_topic: string
+        output_topic: string,
+        save_output: boolean
     }): Observable<DeviceConfigModel>{
         const config_id = params._id
         const device_id = params.device_id

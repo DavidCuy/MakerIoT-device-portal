@@ -10,7 +10,8 @@ export class DeviceConfigUpdateUseCase implements UseCase<{
         input_topic: string,
         input_json: InputDict,
         output_json: InputDict,
-        output_topic: string
+        output_topic: string,
+        save_output: boolean
     }, DeviceConfigModel> {
     constructor(private deviceConfigRepository: DeviceConfigRepository) { }
     execute(
@@ -21,7 +22,8 @@ export class DeviceConfigUpdateUseCase implements UseCase<{
             input_topic: string,
             input_json: InputDict,
             output_json: InputDict,
-            output_topic: string
+            output_topic: string,
+            save_output: boolean
         },
     ): Observable<DeviceConfigModel> {
         return this.deviceConfigRepository.update(params);

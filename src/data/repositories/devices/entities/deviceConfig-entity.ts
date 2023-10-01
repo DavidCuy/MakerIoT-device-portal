@@ -7,6 +7,7 @@ export interface DeviceConfigEntity {
   input_json: InputDict;
   output_json: InputDict;
   output_topic: string;
+  save_output: boolean;
   created_at: string;
   updated_at: string;
 }
