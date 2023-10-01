@@ -249,22 +249,10 @@ export class DeviceConfigComponent implements OnInit, OnDestroy {
               console.log(this.editor_form.get(key)?.value)
               message_to_publish[key] = evaluate(this.editor_form.get(key)?.value, message_payload)
             }
-            console.log(message_to_publish)
-            this.mqttManager.publish(this.output_topic, message_to_publish)
+            this.editorJsonTextArea.nativeElement.value = JSON.stringify(message_to_publish, null, 4)
           } catch (e) {
             this.toastr.warning('El texto recibido no es un json')
             console.error(e)
-          }
-        }
-      })
-
-      this.mqttManager.subscribe(this.output_topic).subscribe((message) => {
-        if (this.editor_play) {
-          try {
-            JSON.parse(message.payload.toString())
-            this.editorJsonTextArea.nativeElement.value = message.payload.toString();
-          } catch (e) {
-            this.toastr.warning('El texto recibido no es un json')
           }
         }
       })
