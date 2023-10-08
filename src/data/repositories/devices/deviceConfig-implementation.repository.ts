@@ -44,7 +44,8 @@ export class DeviceConfigImplementationRepository extends DeviceConfigRepository
             input_topic: params.input_topic,
             input_json: params.input_json,
             output_json: params.output_json,
-            output_topic: params.output_topic
+            output_topic: params.output_topic,
+            save_output: params.save_output
         }
         return this.http.put<DeviceConfigEntity>(`${API_BASE_URL}/device/${device_id}/device-config/${config_id}`, body).pipe(
             map(this.DeviceConfigMapper.mapFrom));
