@@ -5,6 +5,8 @@ services:
     image: davidcuy/makeriot-internal-api:dev
     container_name: api-internal-iot
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       mongo-local:
         condition: service_healthy
     env_file:
@@ -58,3 +60,41 @@ services:
         - "8883:8883"
         - "9001:9001"
 
+  backbackground-services:
+    image: davidcuy/makeriot-background-services:dev
+    container_name: background-services
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongo-local:
+        condition: service_healthy
+    restart: always
+    env_file:
+      - ./.services/background-services/.env
+    environment:
+      PYTHONUNBUFFERED: 1
+  
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    container_name: rabbitmq
+    restart: always
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    ports:
+      - 9890:15672
+    hostname: stats
+    volumes:
+      - ./.volumes/rabbitmq/data:/var/lib/rabbitmq/mnesia
+      - type: bind
+        source: ./.volumes/rabbitmq/rabbitmq-enabled-plugins
+        target: /etc/rabbitmq/enabled_plugins
+      - type: bind
+        source: ./.volumes/rabbitmq/rabbitmq.config
+        target: /etc/rabbitmq/rabbitmq.config
+      - type: bind
+        source: ./.volumes/rabbitmq/rabbitmq-defs.json
+        target: /etc/rabbitmq/rabbitmq-defs.json
+  
