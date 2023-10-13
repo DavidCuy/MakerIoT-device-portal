@@ -22,6 +22,19 @@ import { DeviceConfigUpdateUseCase } from 'src/domain/usecases/deviceConfig/upda
 import { DeviceConfigDeleteUseCase } from 'src/domain/usecases/deviceConfig/delete.usecase';
 import { DeviceConfigImplementationRepository } from './repositories/devices/deviceConfig-implementation.repository';
 
+import { CloudProviderRepository } from 'src/domain/repositories/cloudProvider.repository';
+import { CloudProviderIndexUseCase } from 'src/domain/usecases/cloudProvider/index.usecase';
+import { CloudProviderFindUseCase } from 'src/domain/usecases/cloudProvider/find.usecase';
+import { CloudProviderImplementationRepository } from './repositories/cloud-sync/cloudProvider-implementation.repository';
+
+import { CloudConfigRepository } from 'src/domain/repositories/cloudConfig.repository';
+import { CloudConfigIndexUseCase } from 'src/domain/usecases/cloudConfig/index.usecase';
+import { CloudConfigStoreUseCase } from 'src/domain/usecases/cloudConfig/store.usecase';
+import { CloudConfigFindUseCase } from 'src/domain/usecases/cloudConfig/find.usecase';
+import { CloudConfigDeleteUseCase } from 'src/domain/usecases/cloudConfig/delete.usecase';
+import { CloudConfigImplementationRepository } from './repositories/cloud-sync/cloudConfig-implementation.repository';
+
+
 const deviceIndexUseCaseFactory =
 (deviceRepo: DeviceRepository) => new DeviceIndexUseCase(deviceRepo);
 export const deviceIndexUseCaseProvider = {
@@ -106,6 +119,55 @@ export const deviceConfigDeleteUseCaseProvider = {
 };
 
 
+
+
+const cloudProviderIndexUseCaseFactory =
+(cloudProviderRepo: CloudProviderRepository) => new CloudProviderIndexUseCase(cloudProviderRepo);
+export const cloudProviderIndexUseCaseProvider = {
+    provide: CloudProviderIndexUseCase,
+    useFactory: cloudProviderIndexUseCaseFactory,
+    deps: [CloudProviderRepository],
+};
+const cloudProviderFindUseCaseFactory =
+(cloudProviderRepo: CloudProviderRepository) => new CloudProviderFindUseCase(cloudProviderRepo);
+export const cloudProviderFindUseCaseProvider = {
+    provide: CloudProviderFindUseCase,
+    useFactory: cloudProviderFindUseCaseFactory,
+    deps: [CloudProviderRepository],
+};
+
+
+
+const cloudConfigIndexUseCaseFactory =
+(cloudConfigRepo: CloudConfigRepository) => new CloudConfigIndexUseCase(cloudConfigRepo);
+export const cloudConfigIndexUseCaseProvider = {
+    provide: CloudConfigIndexUseCase,
+    useFactory: cloudConfigIndexUseCaseFactory,
+    deps: [CloudConfigRepository],
+};
+const cloudConfigFindUseCaseFactory =
+(cloudConfigRepo: CloudConfigRepository) => new CloudConfigFindUseCase(cloudConfigRepo);
+export const cloudConfigStoreUseCaseProvider = {
+    provide: CloudConfigFindUseCase,
+    useFactory: cloudConfigFindUseCaseFactory,
+    deps: [CloudConfigRepository],
+};
+const cloudConfigStoreUseCaseFactory =
+(cloudConfigRepo: CloudConfigRepository) => new CloudConfigFindUseCase(cloudConfigRepo);
+export const cloudConfigFindUseCaseProvider = {
+    provide: CloudConfigFindUseCase,
+    useFactory: cloudConfigStoreUseCaseFactory,
+    deps: [CloudConfigRepository],
+};
+const cloudConfigDeleteUseCaseFactory =
+(cloudConfigRepo: CloudConfigRepository) => new CloudConfigDeleteUseCase(cloudConfigRepo);
+export const cloudConfigDeleteUseCaseProvider = {
+    provide: CloudConfigDeleteUseCase,
+    useFactory: cloudConfigDeleteUseCaseFactory,
+    deps: [CloudConfigRepository],
+};
+
+
 @NgModule({
     providers: [
         deviceIndexUseCaseProvider,
@@ -119,9 +181,17 @@ export const deviceConfigDeleteUseCaseProvider = {
         deviceConfigStoreUseCaseProvider,
         deviceConfigUpdateUseCaseProvider,
         deviceConfigDeleteUseCaseProvider,
+        cloudProviderFindUseCaseProvider,
+        cloudProviderIndexUseCaseProvider,
+        cloudConfigIndexUseCaseProvider,
+        cloudConfigStoreUseCaseProvider,
+        cloudConfigFindUseCaseProvider,
+        cloudConfigDeleteUseCaseProvider,
         { provide: DeviceRepository, useClass: DeviceImplementationRepository },
         { provide: DeviceTypeRepository, useClass: DeviceTypeImplementationRepository },
         { provide: DeviceConfigRepository, useClass: DeviceConfigImplementationRepository },
+        { provide: CloudConfigRepository, useClass: CloudConfigImplementationRepository },
+        { provide: CloudProviderRepository, useClass: CloudProviderImplementationRepository },
     ],
     imports: [
         CommonModule,
