@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DataModule } from 'src/data/data.module';
 import { MqttClientConfigImplementationRepository } from '../../data/repositories/mqtt/client-config-implementation.repository';
 import { MqttClientConfigModel } from '../../domain/models/clientConfig.model';
+import { CloudSyncComponent } from './pages/cloud-sync/cloud-sync.component';
 
 
 const importModules: (typeof BrowserModule | typeof AppRoutingModule | ModuleWithProviders<MqttModule> | ModuleWithProviders<ToastrModule>  ) [] = [
@@ -51,7 +52,8 @@ if (mqtt_client_config.host !== null) {
     ConfigbarComponent,
     DashboardComponent,
     MqttCredentialComponent,
-    ConfigComponent
+    ConfigComponent,
+    CloudSyncComponent,
   ],
   imports: importModules,
   providers: [],

@@ -31,6 +31,12 @@ export class SidebarComponent implements OnInit, DoCheck {
       url: '/devices'
     },
     {
+      title: 'Cloud Sync',
+      name: 'cloud_sync',
+      icon: 'cloud_sync',
+      url: '/cloud-sync'
+    },
+    {
       title: 'Configuracion',
       name: 'config',
       icon: 'settings',
