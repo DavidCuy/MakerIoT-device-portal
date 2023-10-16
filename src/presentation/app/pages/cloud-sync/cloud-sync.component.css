@@ -17,3 +17,48 @@
     font-size: xx-large;
     color: darkred;
 }
+
+.form-switch {
+    padding-left: 0;
+}
+
+.form-switch .form-check-input {
+    margin-left: 0;
+}
+
+@keyframes heartbeat
+{
+  0%
+  {
+    transform: scale( .75 );
+    opacity: 0.2;
+  }
+  50%
+  {
+    transform: scale( 1 );
+    opacity: 1;
+  }
+  100%
+  {
+    transform: scale( .75 );
+    opacity: 0.2;
+  }
+}
+
+.fa-beat-fade {
+    animation: heartbeat 1s infinite
+}
+
+
+.fa-circle.fa-in-progress{
+    color: dodgerblue;
+}
+
+
+.fa-circle.fa-success{
+    color: forestgreen;
+}
+
+.fa-circle.fa-failed {
+    color: darkred;
+}

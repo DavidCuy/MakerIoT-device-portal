@@ -136,4 +136,31 @@ export class CloudSyncComponent implements OnInit {
     })
   }
 
+  enabled_conf(id_cloud_integration: number) {
+    let cloudConfig = this.cloudConfigs.find(cc => cc.id == id_cloud_integration);
+    Swal.fire({
+      title: `¿Seguro que desea habilitar la integración para ${cloudConfig?.profile}?`,
+      text: "Una vez habilitada no se puede deshabilitar",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.toastr.success('Se ha habilitado la configuración, le avisaremos cuando esté lista')
+      } else {
+        let elementIndex = this.cloudConfigs.findIndex(cc => cc.id == id_cloud_integration);
+        this.cloudConfigs[elementIndex] = {
+          id: cloudConfig!.id,
+          enabled: false,
+          id_cloud_provider: cloudConfig!.id_cloud_provider,
+          profile: cloudConfig!.profile,
+          cloudProvider: cloudConfig?.cloudProvider
+        }
+        this.cloudConfigs = Object.assign([], this.cloudConfigs);
+      }
+    })
+  }
+
 }
