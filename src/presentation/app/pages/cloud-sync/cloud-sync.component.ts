@@ -7,6 +7,7 @@ import { CloudProviderModel } from 'src/domain/models/cloudProvider.model';
 import { CloudConfigModel } from 'src/domain/models/cloudConfig.model';
 import { IndexEntity } from 'src/data/repositories/index/entitites/index-entity';
 import Swal from 'sweetalert2';
+import { CloudConfigDeleteUseCase } from 'src/domain/usecases/cloudConfig/delete.usecase';
 
 @Component({
   selector: 'app-cloud-sync',
@@ -26,6 +27,7 @@ export class CloudSyncComponent implements OnInit {
     private cloudProviderIndexUsecase: CloudProviderIndexUseCase,
     private cloudConfigIndexUseCase: CloudConfigIndexUseCase,
     private cloudConfigStoreUseCase: CloudConfigStoreUseCase,
+    private cloudConfigDeleteUseCase: CloudConfigDeleteUseCase,
     private toastr: ToastrService) {
     
   }
@@ -54,11 +56,7 @@ export class CloudSyncComponent implements OnInit {
   aws_provider_swal(provider_id: number) {
     Swal.fire({
       title: 'Nueva configuracion de AWS',
-      html:
-        `<label for="swal2-input-profile" class="swal2-input-label">Nombre del perfil de configuracion</label>
-        <input id="swal2-input-profile" class="swal2-input" onkeypress="document.getElementById('swal2-aws-validation-message').style.display = 'none'">
-        
-        <label for="swal2-input-aws-account-id" class="swal2-input-label">Cuenta de AWS</label>
+      html: `<label for="swal2-input-aws-account-id" class="swal2-input-label">Cuenta de AWS</label>
         <input id="swal2-input-aws-account-id" class="swal2-input" onkeypress="document.getElementById('swal2-aws-validation-message').style.display = 'none'">
 
         <label for="swal2-input-aws-region" class="swal2-input-label">Region</label>
@@ -75,19 +73,17 @@ export class CloudSyncComponent implements OnInit {
       confirmButtonText: 'Aceptar',
       denyButtonText: 'Cancelar',
       preConfirm: () => {
-        let profile = (<HTMLInputElement>document.getElementById('swal2-input-profile'))?.value;
         let account_id = (<HTMLInputElement>document.getElementById('swal2-input-aws-account-id'))?.value;
         let aws_region = (<HTMLInputElement>document.getElementById('swal2-input-aws-region'))?.value;
         let access_key_id = (<HTMLInputElement>document.getElementById('swal2-input-aws-access-key-id'))?.value;
         let access_key_secret = (<HTMLInputElement>document.getElementById('swal2-input-aws-access-key-secret'))?.value;
 
-        if (!profile || !access_key_id || !access_key_secret) {
+        if (!access_key_id || !access_key_secret) {
           document.getElementById('swal2-aws-validation-message')!.style.display = 'flex';
           return false
         }
 
         return {
-          'profile': profile,
           'id_cloud_provider': provider_id,
           'provider': 'aws',
           'account_id': account_id,
@@ -97,13 +93,40 @@ export class CloudSyncComponent implements OnInit {
         }
       },
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
-      console.log(result)
       if (result.isConfirmed) {
         this.cloudConfigStoreUseCase.execute(result.value).subscribe(() => {
           this.cloudConfigIndexUseCase.execute().subscribe((resp) => {
             this.cloudConfigs = resp.Data
             this.toastr.success('Configuración creada')
+          }, (error) => {
+            this.toastr.error('Ocurrió un error')
+            console.error(error)
+          })
+        })
+      }
+    })
+  }
+
+  delete_integration(id_cloud_integration: number) {
+    let cloudConfig = this.cloudConfigs.find(cc => cc.id == id_cloud_integration);
+    Swal.fire({
+      title: `¿Seguro que desea eliminar ${cloudConfig?.profile}?`,
+      text: "Esta acción no se puede revertir",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Eliminar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cloudConfigDeleteUseCase.execute({ id: id_cloud_integration }).subscribe((resp) => {
+          this.cloudConfigIndexUseCase.execute().subscribe((resp) => {
+            this.cloudConfigs = resp.Data
+            Swal.fire(
+              '¡Eliminado!',
+              'La configuración se ha eliminado.',
+              'success'
+            )
           }, (error) => {
             this.toastr.error('Ocurrió un error')
             console.error(error)

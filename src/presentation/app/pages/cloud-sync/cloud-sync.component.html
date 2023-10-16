@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="dropdown float-right" style="float: right">
                 <a href="#" class="btn bg-gradient-dark dropdown-toggle " data-bs-toggle="dropdown" id="confDropdownItems">
-                    Nueva configuración
+                    Nueva integración
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="confDropdownItems">
                     <li *ngFor="let cloudProv of cloudProviders">
@@ -17,7 +17,7 @@
     </div>
     <div class="row" *ngIf="cloudConfigs.length < 1">
         <div class="col-12 mt-5">
-            <h2 class="text-center">No hay configuraciones de nubes disponibles. Agregue uno para comenzar</h2>
+            <h2 class="text-center">No hay intgraciones de nubes disponibles. Agregue uno para comenzar</h2>
         </div>
     </div>
     <div class="row">
@@ -25,7 +25,10 @@
             <div class="col-lg-4 col-md-6 col-sm-12 col-bottom-1rem" *ngFor="let cloudConf of cloudConfigs">
                 <div class="card card-frame">
                     <div class="card-body">
-                        <h3>{{ cloudConf.profile }}</h3>
+                        <div class="overflow-hidden">
+                            <h3 class="overflow-text float-left">{{ cloudConf.profile }}</h3>
+                            <i class="material-icons rigth pointer overflow-hidden text-big" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar" data-container="body" data-animation="true" (click)="delete_integration(cloudConf.id)">delete</i>
+                        </div>
                     </div>
                     <hr class="dark horizontal my-0">
                     <div class="card-footer">

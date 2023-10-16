@@ -1,0 +1,19 @@
+.overflow-text {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 90%;
+}
+
+.overflow-hidden{
+    overflow: hidden;
+}
+
+.float-left {
+    float: left;
+}
+
+.text-big {
+    font-size: xx-large;
+    color: darkred;
+}
