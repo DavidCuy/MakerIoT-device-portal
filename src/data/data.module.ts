@@ -147,15 +147,15 @@ export const cloudConfigIndexUseCaseProvider = {
 };
 const cloudConfigFindUseCaseFactory =
 (cloudConfigRepo: CloudConfigRepository) => new CloudConfigFindUseCase(cloudConfigRepo);
-export const cloudConfigStoreUseCaseProvider = {
+export const cloudConfigFindUseCaseProvider = {
     provide: CloudConfigFindUseCase,
     useFactory: cloudConfigFindUseCaseFactory,
     deps: [CloudConfigRepository],
 };
 const cloudConfigStoreUseCaseFactory =
-(cloudConfigRepo: CloudConfigRepository) => new CloudConfigFindUseCase(cloudConfigRepo);
-export const cloudConfigFindUseCaseProvider = {
-    provide: CloudConfigFindUseCase,
+(cloudConfigRepo: CloudConfigRepository) => new CloudConfigStoreUseCase(cloudConfigRepo);
+export const cloudConfigStoreUseCaseProvider = {
+    provide: CloudConfigStoreUseCase,
     useFactory: cloudConfigStoreUseCaseFactory,
     deps: [CloudConfigRepository],
 };

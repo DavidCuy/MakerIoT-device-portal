@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CloudProviderIndexUseCase } from 'src/domain/usecases/cloudProvider/index.usecase';
 import { CloudConfigIndexUseCase } from 'src/domain/usecases/cloudConfig/index.usecase';
+import { CloudConfigStoreUseCase } from 'src/domain/usecases/cloudConfig/store.usecase';
 import { CloudProviderModel } from 'src/domain/models/cloudProvider.model';
 import { CloudConfigModel } from 'src/domain/models/cloudConfig.model';
 import { IndexEntity } from 'src/data/repositories/index/entitites/index-entity';
@@ -24,6 +25,7 @@ export class CloudSyncComponent implements OnInit {
   constructor(
     private cloudProviderIndexUsecase: CloudProviderIndexUseCase,
     private cloudConfigIndexUseCase: CloudConfigIndexUseCase,
+    private cloudConfigStoreUseCase: CloudConfigStoreUseCase,
     private toastr: ToastrService) {
     
   }
@@ -74,6 +76,8 @@ export class CloudSyncComponent implements OnInit {
       denyButtonText: 'Cancelar',
       preConfirm: () => {
         let profile = (<HTMLInputElement>document.getElementById('swal2-input-profile'))?.value;
+        let account_id = (<HTMLInputElement>document.getElementById('swal2-input-aws-account-id'))?.value;
+        let aws_region = (<HTMLInputElement>document.getElementById('swal2-input-aws-region'))?.value;
         let access_key_id = (<HTMLInputElement>document.getElementById('swal2-input-aws-access-key-id'))?.value;
         let access_key_secret = (<HTMLInputElement>document.getElementById('swal2-input-aws-access-key-secret'))?.value;
 
@@ -86,19 +90,24 @@ export class CloudSyncComponent implements OnInit {
           'profile': profile,
           'id_cloud_provider': provider_id,
           'provider': 'aws',
-          'account_id': access_key_id,
-          'save_config': access_key_id,
-          'aws_access_key_id': access_key_id,
-          'aws_secret_access_key': access_key_secret,
+          'account_id': account_id,
+          'region': aws_region,
+          'access_key_id': access_key_id,
+          'access_key_secret': access_key_secret,
         }
       },
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       console.log(result)
       if (result.isConfirmed) {
-        this.cloudProviderIndexUsecase.execute().subscribe(() => {
-          console.log(provider_id)
-          console.log(result.value)
+        this.cloudConfigStoreUseCase.execute(result.value).subscribe(() => {
+          this.cloudConfigIndexUseCase.execute().subscribe((resp) => {
+            this.cloudConfigs = resp.Data
+            this.toastr.success('Configuración creada')
+          }, (error) => {
+            this.toastr.error('Ocurrió un error')
+            console.error(error)
+          })
         })
       }
     })
